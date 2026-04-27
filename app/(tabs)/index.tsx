@@ -1,98 +1,237 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
+import BagsIcon from "@/components/ui/categoryIcon/BagsIcon";
+import ClothesIcon from "@/components/ui/categoryIcon/ClothesIcon";
+import OtherIcon from "@/components/ui/categoryIcon/OtherIcon";
+import ShoesIcon from "@/components/ui/categoryIcon/ShoesIcon";
+import Header from "@/components/ui/Header";
+import ProductCard from "@/components/ui/ProductCard";
+import { Colors } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
+import { Image } from "expo-image";
+import { useRouter } from "expo-router";
+import React from "react";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const router = useRouter();
+  const schemeRaw = useColorScheme();
+  const scheme: keyof typeof Colors = (schemeRaw ??
+    "light") as keyof typeof Colors;
+  const tint: string = Colors[scheme].tint;
+  const borderColor: string = Colors[scheme].border;
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
+  const handleSeeAllCategoriesPress = () => {
+    router.push("/categories");
+  };
+
+  const pushProductList = (params?: { category?: number }) => {
+    const routeParams: Record<string, string> = {};
+    if (params?.category !== undefined) {
+      routeParams.category = String(params.category);
+    }
+    router.push({ pathname: "/productList", params: routeParams });
+  };
+
+  const handleSeeAllProductsPress = () => {
+    pushProductList();
+  };
+
+  const handleCategoryItemPress = (category?: number) => {
+    pushProductList(category ? { category } : undefined);
+  };
+  const categories = [
+    {
+      id: "1",
+      name: "Electronics",
+      image: <OtherIcon width={48} height={48} />,
+      filter: 1,
+    },
+    {
+      id: "2",
+      name: "Apparel",
+      image: <ClothesIcon width={48} height={48} />,
+      filter: 2,
+    },
+    {
+      id: "3",
+      name: "Footwear",
+      image: <ShoesIcon width={48} height={48} />,
+      filter: 3,
+    },
+    {
+      id: "4",
+      name: "Bags",
+      image: <BagsIcon width={48} height={48} />,
+      filter: 4,
+    },
+    {
+      id: "5",
+      name: "Home",
+      image: <OtherIcon width={48} height={48} />,
+      filter: 5,
+    },
+  ];
+  const products = [
+    {
+      id: "1",
+      name: "Wireless Earbuds A1",
+      price: 1290000,
+      discount: 15,
+      image: require("../../assets/images/product1.png"),
+    },
+    {
+      id: "2",
+      name: "Cotton Tee Classic",
+      price: 320000,
+      discount: 10,
+      image: require("../../assets/images/product1.png"),
+    },
+    {
+      id: "3",
+      name: "Running Sneakers Flex",
+      price: 1900000,
+      image: require("../../assets/images/product1.png"),
+    },
+    {
+      id: "4",
+      name: "City Backpack 20L",
+      price: 780000,
+      discount: 12,
+      image: require("../../assets/images/product1.png"),
+    },
+    {
+      id: "5",
+      name: "Ceramic Desk Lamp",
+      price: 650000,
+      image: require("../../assets/images/product1.png"),
+    },
+  ];
+  return (
+    <View>
+      <ThemedView style={styles.container}>
+        <Header />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <ThemedView style={styles.stepContainer}>
+            <Image
+              source={require("../../assets/images/banner/banner1.png")}
+              style={styles.banner}
+            />
+          </ThemedView>
+          <ThemedView>
+            <ThemedView style={styles.headerSection}>
+              <ThemedText type="defaultSemiBold" style={{ fontSize: 20 }}>
+                Category
+              </ThemedText>
+              <Pressable
+                onPress={() => {
+                  handleSeeAllCategoriesPress();
+                }}
+              >
+                <ThemedText type="link" style={{ color: tint }}>
+                  See All
+                </ThemedText>
+              </Pressable>
+            </ThemedView>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{ marginBottom: 12 }}
+            >
+              {categories.map((cat) => (
+                <Pressable
+                  key={cat.id}
+                  style={[styles.categoryItem, { borderColor: borderColor }]}
+                  onPress={() => handleCategoryItemPress(cat.filter)}
+                >
+                  {React.isValidElement(cat.image) ? (
+                    <View style={styles.categoryIcon}>{cat.image}</View>
+                  ) : (
+                    <Image
+                      source={cat.image as any}
+                      style={styles.categoryIcon}
+                    />
+                  )}
+                  <ThemedText style={{ marginTop: 6 }}>{cat.name}</ThemedText>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </ThemedView>
+          <ThemedView>
+            <ThemedView style={styles.headerSection}>
+              <ThemedText type="defaultSemiBold" style={{ fontSize: 20 }}>
+                Lastest Product
+              </ThemedText>
+              <Pressable
+                onPress={() => {
+                  handleSeeAllProductsPress();
+                }}
+              >
+                <ThemedText type="link" style={{ color: tint }}>
+                  See All
+                </ThemedText>
+              </Pressable>
+            </ThemedView>
+            <ThemedView
+              style={{
+                gap: 10,
+                flexDirection: "row",
+                flexWrap: "wrap",
+                justifyContent: "space-between",
+              }}
+            >
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </ThemedView>
+          </ThemedView>
+        </ScrollView>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    height: "100%",
+    width: "100%",
+    padding: 15,
+    paddingTop: 50,
+    position: "relative",
+  },
+  banner: {
+    borderRadius: 12,
+    height: 200,
+    width: "100%",
+  },
+  headerSection: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
   },
   stepContainer: {
     gap: 8,
     marginBottom: 8,
+    marginTop: 12,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  categoryItem: {
+    alignItems: "center",
+    marginRight: 16,
+    paddingTop: 12,
+    paddingBottom: 12,
+    width: 130,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderRadius: 12,
+    borderColor: "#F4F5FD",
+    borderWidth: 1,
+  },
+  categoryIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
