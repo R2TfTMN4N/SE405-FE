@@ -1,3 +1,4 @@
+import "@/i18n"; // Initialize i18n
 import {
   DarkTheme,
   DefaultTheme,
@@ -107,6 +108,64 @@ export default function RootLayout() {
               />
               <Stack.Screen name="login" options={{ headerShown: false }} />
               <Stack.Screen name="signup" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="forgotPassword/index"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="forgotPassword/emailVerification"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="forgotPassword/setNewPassword"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="forgotPassword/success"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="onboarding/index"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="onboarding/02"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="onboarding/03"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="checkout/index"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="checkout/payment"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="checkout/review"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="checkout/items"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="checkout/result"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="shippingAddress"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen name="orderList" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="order/[id]"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen name="feedback" options={{ headerShown: false }} />
             </Stack>
           )}
           <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />

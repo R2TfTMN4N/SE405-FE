@@ -1,0 +1,73 @@
+{
+  "common": {
+    "appName": "ShopEase",
+    "login": "Đăng nhập",
+    "signup": "Đăng ký",
+    "email": "Email hoặc Tên đăng nhập",
+    "password": "Mật khẩu",
+    "forgotPassword": "Quên mật khẩu?",
+    "loggingIn": "Đang đăng nhập…",
+    "loginWithGoogle": "Đăng nhập với Google",
+    "continue": "Tiếp tục",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "confirm": "Xác nhận",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "finish": "Hoàn thành",
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công"
+  },
+  "login": {
+    "title": "Đăng nhập",
+    "dontHaveAccount": "Chưa có tài khoản?",
+    "emailPlaceholder": "Nhập email hoặc tên đăng nhập",
+    "passwordPlaceholder": "Nhập mật khẩu",
+    "emailRequired": "Email và mật khẩu là bắt buộc.",
+    "loginFailed": "Đăng nhập thất bại. Vui lòng thử lại.",
+    "invalidCredentials": "Tên đăng nhập hoặc mật khẩu không đúng. Vui lòng thử lại.",
+    "termsText": "Bằng việc đăng nhập, bạn đồng ý với",
+    "termsOfService": "Điều khoản dịch vụ",
+    "and": "và",
+    "privacyPolicy": "Chính sách bảo mật"
+  },
+  "signup": {
+    "title": "Đăng ký",
+    "alreadyHaveAccount": "Đã có tài khoản?",
+    "createAccount": "Tạo tài khoản"
+  },
+  "home": {
+    "welcome": "Chào mừng",
+    "categories": "Danh mục",
+    "featured": "Sản phẩm nổi bật",
+    "newArrivals": "Hàng mới về"
+  },
+  "profile": {
+    "title": "Hồ sơ",
+    "editProfile": "Chỉnh sửa hồ sơ",
+    "changePassword": "Đổi mật khẩu",
+    "orderHistory": "Lịch sử đơn hàng",
+    "settings": "Cài đặt",
+    "language": "Ngôn ngữ",
+    "theme": "Giao diện",
+    "logout": "Đăng xuất"
+  },
+  "cart": {
+    "title": "Giỏ hàng",
+    "empty": "Giỏ hàng của bạn đang trống",
+    "total": "Tổng cộng",
+    "checkout": "Thanh toán",
+    "removeItem": "Xóa sản phẩm"
+  },
+  "categories": {
+    "electronics": "Điện tử",
+    "apparel": "Thời trang",
+    "shoes": "Giày",
+    "clothes": "Quần áo",
+    "bags": "Túi",
+    "other": "Khác"
+  }
+}

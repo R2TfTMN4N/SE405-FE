@@ -4,7 +4,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { useEffect, useRef, useState, type ReactElement } from "react";
-import { ActivityIndicator, Animated, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Animated,
+  ImageSourcePropType,
+  StyleSheet,
+  View,
+} from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
@@ -15,6 +21,7 @@ export default function WelcomeScreen(): ReactElement {
     console.log("WelcomeScreen mounted");
   }, []);
   const [progress, setProgress] = useState<number>(0);
+  const [done, setDone] = useState<boolean>(false);
   const [checking, setChecking] = useState<boolean>(true);
   const animated = useRef<Animated.Value>(new Animated.Value(0)).current;
 
@@ -28,12 +35,12 @@ export default function WelcomeScreen(): ReactElement {
       setChecking(false);
     })();
 
-    const hasWork = false;
-    const workDuration = hasWork ? 10000 : 2000; // ms
+    const hasWork: boolean = false;
+    const workDuration: number = hasWork ? 10000 : 2000; // ms
 
-    const start = Date.now();
-    const tick = 50; // ms
-    const id = setInterval(() => {
+    const start: number = Date.now();
+    const tick: number = 50; // ms
+    const id: ReturnType<typeof setInterval> = setInterval(() => {
       const elapsed = Date.now() - start;
       const p = Math.min(1, elapsed / workDuration);
       setProgress(p);
@@ -52,7 +59,7 @@ export default function WelcomeScreen(): ReactElement {
             console.warn("Failed to save welcome flag", e);
           }
           // router.replace expects a string path; cast to any only if necessary for router types
-          (router as any).replace("/(tabs)/");
+          (router as any).replace("/onboarding");
         })();
       }
     }, tick);
@@ -60,29 +67,31 @@ export default function WelcomeScreen(): ReactElement {
     return () => clearInterval(id);
   }, [animated, router]);
 
-  const widthInterpolation = animated.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0%", "100%"],
-  });
+  const widthInterpolation: Animated.AnimatedInterpolation<string> =
+    animated.interpolate({
+      inputRange: [0, 1],
+      outputRange: ["0%", "100%"],
+    });
 
   const scheme = useColorScheme() ?? "light";
   const tint = Colors[scheme].tint;
+  const logoSrc: ImageSourcePropType =
+    scheme === "dark"
+      ? require("../assets/images/logo/dark-logo.png")
+      : require("../assets/images/logo/light-logo.png");
 
   if (checking) {
     return (
-      <ThemedView style={[styles.container]}>
-        <ActivityIndicator size="large" />
+      <ThemedView style={styles.container}>
+        <ActivityIndicator size="large" color={tint} />
       </ThemedView>
     );
   }
 
   return (
-    <ThemedView style={[styles.container]}>
+    <ThemedView style={styles.container}>
       <ThemedView>
-        <Image
-          source={require("@/assets/images/logo/light-logo.png")}
-          style={{ width: 200, height: 200 }}
-        />
+        <Image source={logoSrc} style={{ width: 200, height: 200 }} />
       </ThemedView>
       <ThemedText type="title">ShopEase</ThemedText>
       <View style={styles.progressContainer} pointerEvents="none">

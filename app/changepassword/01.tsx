@@ -75,6 +75,7 @@ const ChangePassword01Screen: FC = () => {
               onPress={() => {
                 router.push("/changepassword/02" as any);
               }}
+              style={{ flex: 1 }}
               text="Continue"
             />
           </View>

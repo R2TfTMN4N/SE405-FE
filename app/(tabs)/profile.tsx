@@ -1,12 +1,14 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import CustomSwitch from "@/components/ui/CustomSwitch";
+import LanguageSelector from "@/components/ui/LanguageSelector";
 import ProfileMenuItem from "@/components/ui/ProfileMenuItem";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Alert,
   ColorSchemeName,
@@ -20,6 +22,7 @@ import {
 import { useThemePreference } from "../providers/ThemePreferenceProvider";
 
 const ProfileScreen: React.FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const schemeRaw = useColorScheme() as ColorSchemeName | null | undefined;
   const scheme: keyof typeof Colors = (schemeRaw ??
@@ -75,17 +78,12 @@ const ProfileScreen: React.FC = () => {
           <ProfileMenuItem
             icon="box"
             name="Shipping Address"
-            onPress={() => Alert.alert("Chuyển đến Shipping Address")}
-          />
-          <ProfileMenuItem
-            icon="credit-card"
-            name="Payment Method"
-            onPress={() => Alert.alert("Chuyển đến Payment Method")}
+            onPress={() => router.push("/shippingAddress" as any)}
           />
           <ProfileMenuItem
             icon="clipboard"
             name="Order History"
-            onPress={() => Alert.alert("Chuyển đến Order History")}
+            onPress={() => router.push("/orderList" as any)}
           />
         </ThemedView>
 
@@ -130,6 +128,13 @@ const ProfileScreen: React.FC = () => {
             value={!!isDarkTheme}
             onValueChange={setTheme}
           />
+        </ThemedView>
+
+        <ThemedView style={styles.section}>
+          <ThemedText style={[styles.sectionTitle, { color: textColor }]}>
+            {t("profile.language")}
+          </ThemedText>
+          <LanguageSelector />
         </ThemedView>
         <View style={{ height: 50 }} />
       </ScrollView>

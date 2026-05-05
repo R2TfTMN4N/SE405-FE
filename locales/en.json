@@ -1,0 +1,73 @@
+{
+  "common": {
+    "appName": "ShopEase",
+    "login": "Login",
+    "signup": "Sign up",
+    "email": "Email or Username",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "loggingIn": "Logging in…",
+    "loginWithGoogle": "Login with Google",
+    "continue": "Continue",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "login": {
+    "title": "Login",
+    "dontHaveAccount": "Don't have an account?",
+    "emailPlaceholder": "Enter your email or username",
+    "passwordPlaceholder": "Enter your password",
+    "emailRequired": "Email and password are required.",
+    "loginFailed": "Login failed. Please try again.",
+    "invalidCredentials": "Username or password is incorrect. Please try again.",
+    "termsText": "By logging in, you agree to our",
+    "termsOfService": "Terms of Service",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy"
+  },
+  "signup": {
+    "title": "Sign Up",
+    "alreadyHaveAccount": "Already have an account?",
+    "createAccount": "Create Account"
+  },
+  "home": {
+    "welcome": "Welcome",
+    "categories": "Categories",
+    "featured": "Featured Products",
+    "newArrivals": "New Arrivals"
+  },
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit Profile",
+    "changePassword": "Change Password",
+    "orderHistory": "Order History",
+    "settings": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "logout": "Logout"
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "total": "Total",
+    "checkout": "Checkout",
+    "removeItem": "Remove item"
+  },
+  "categories": {
+    "electronics": "Electronics",
+    "apparel": "Apparel",
+    "shoes": "Shoes",
+    "clothes": "Clothes",
+    "bags": "Bags",
+    "other": "Other"
+  }
+}

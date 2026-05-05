@@ -26,17 +26,17 @@ const WishlistScreen: FC = () => {
   const [wishlistItems, setWishlistItems] = useState([
     {
       id: "1",
-      name: "Cotton Tee Classic",
-      price: 320000,
+      name: "Dog A",
+      price: 120000,
       image: require("@/assets/images/product1.png"),
       discount: 10,
     },
     {
       id: "2",
-      name: "Running Sneakers Flex",
-      price: 1900000,
+      name: "Dog B",
+      price: 80000,
       image: require("@/assets/images/product1.png"),
-      discount: 8,
+      discount: 5,
     },
   ]);
 

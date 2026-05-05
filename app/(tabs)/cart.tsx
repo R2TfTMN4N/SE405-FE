@@ -17,7 +17,6 @@ import {
   ScrollView,
   StyleSheet,
   TextInput,
-  View,
 } from "react-native";
 
 const CartScreen: FC = () => {
@@ -35,10 +34,10 @@ const CartScreen: FC = () => {
     {
       product: {
         id: "1",
-        name: "Wireless Earbuds A1",
-        price: 1290000,
+        name: "10 Pack Cotton Tee Classic",
+        price: 500000,
         image: require("../../assets/images/product1.png"),
-        discount: 15,
+        discount: 10,
       },
       numberOfItems: 2,
       checked: false,
@@ -46,10 +45,10 @@ const CartScreen: FC = () => {
     {
       product: {
         id: "2",
-        name: "City Backpack 20L",
-        price: 780000,
+        name: "Running Sneakers Flex",
+        price: 100000,
         image: require("../../assets/images/product1.png"),
-        discount: 12,
+        discount: 5,
       },
       numberOfItems: 1,
       checked: false,
@@ -118,6 +117,10 @@ const CartScreen: FC = () => {
     setIsDeleteModalVisible(false);
   };
 
+  const handleCheckout = () => {
+    router.push("/checkout" as any);
+  };
+
   return cartItems.length === 0 ? (
     <ThemedView
       style={[
@@ -143,7 +146,7 @@ const CartScreen: FC = () => {
       />
     </ThemedView>
   ) : (
-    <View>
+    <ThemedView>
       <ThemedView style={styles.container}>
         <ThemedView style={styles.headerContainer}>
           <ThemedView style={styles.leftHeader}>
@@ -246,7 +249,7 @@ const CartScreen: FC = () => {
             </ThemedView>
           </ThemedView>
           <FullButton
-            onPress={() => {}}
+            onPress={handleCheckout}
             text={`Checkout (${numberOfChecked})`}
           />
         </ThemedView>
@@ -305,7 +308,7 @@ const CartScreen: FC = () => {
               styles.modalOverlay,
               { backgroundColor: palette.modalOverlay },
             ]}
-            onPress={() => setIsModalVisible(false)}
+            onPress={() => setIsDeleteModalVisible(false)}
           />
           <ThemedView
             style={[
@@ -322,7 +325,7 @@ const CartScreen: FC = () => {
           </ThemedView>
         </KeyboardAvoidingView>
       </Modal>
-    </View>
+    </ThemedView>
   );
 };
 
