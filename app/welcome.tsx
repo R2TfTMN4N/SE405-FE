@@ -58,8 +58,14 @@ export default function WelcomeScreen(): ReactElement {
           } catch (e) {
             console.warn("Failed to save welcome flag", e);
           }
+          // Temporary auto-login: skip onboarding/login and go straight to tabs.
+          try {
+            await AsyncStorage.setItem("loginToken", "dev-auto");
+          } catch (e) {
+            console.warn("Failed to set auto-login token", e);
+          }
           // router.replace expects a string path; cast to any only if necessary for router types
-          (router as any).replace("/onboarding");
+          (router as any).replace("/(tabs)");
         })();
       }
     }, tick);
