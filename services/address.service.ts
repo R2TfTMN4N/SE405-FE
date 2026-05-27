@@ -1,4 +1,4 @@
-import { http } from "../services/http";
+import { http } from "./http";
 
 export type ID = string;
 
