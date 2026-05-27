@@ -75,5 +75,22 @@
     "typeMessage": "Nhập tin nhắn...",
     "startConversation": "Bắt đầu cuộc trò chuyện với người bán",
     "chatWithSeller": "Trò chuyện với người bán"
+  },
+  "faqs": {
+    "title": "FAQs",
+    "question1": "Tôi có thể hủy đơn hàng không",
+
+    "answer1": "Có, chỉ khi đơn hàng chưa được gửi đi. Bạn có thể liên hệ với bộ phận chăm sóc khách hàng của chúng tôi để hủy đơn hàng.",
+    "question2": "Tôi có nhận được sản phẩm giống như trong ảnh không?",
+    "answer2": "Màu sắc sản phẩm thực tế có thể khác với hình ảnh hiển thị. Mỗi màn hình hoặc thiết bị di động có khả năng hiển thị màu sắc khác nhau, và mỗi người có thể nhìn thấy màu sắc khác nhau. Ngoài ra, điều kiện ánh sáng khi chụp ảnh cũng có thể ảnh hưởng đến màu sắc của hình ảnh.",
+    "question3": "Làm thế nào để khôi phục mật khẩu đã quên?",
+    "answer3": "Nếu bạn quên mật khẩu, bạn có thể khôi phục từ phần \"Đăng nhập - Quên mật khẩu?\". Bạn sẽ nhận được email với liên kết để nhập và xác nhận mật khẩu mới.",
+    "question4": "Thông tin cá nhân của tôi có được bảo mật không?",
+    "answer4": "Thông tin cá nhân của bạn được bảo mật. Chúng tôi không cho thuê, bán, trao đổi hoặc giao dịch địa chỉ email. Khi bạn đặt hàng với chúng tôi, chúng tôi thu thập tên, địa chỉ, số điện thoại, thông tin thẻ tín dụng và địa chỉ email của bạn. Chúng tôi sử dụng thông tin này để thực hiện đơn hàng và liên lạc với bạn về đơn hàng của bạn. Tất cả thông tin của bạn được giữ bí mật và sẽ không được tiết lộ cho bất kỳ ai trừ khi được yêu cầu bởi các cơ quan chính phủ.",
+    "question5": "Tôi có thể sử dụng phương thức thanh toán nào để mua hàng?",
+    "answer5": "Chúng tôi cung cấp các phương thức thanh toán sau: PayPal, VNPay và Mã giảm giá, nếu có.",
+    "more": "Đối với bất kỳ thắc mắc nào, bạn có thể truy cập trang web của chúng tôi để",
+    "help": "Trung tâm trợ giúp",
+    "at": "tại ShopEase.com"
   }
 }
