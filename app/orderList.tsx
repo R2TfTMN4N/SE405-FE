@@ -8,6 +8,7 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import React, { FC, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 const OrderListScreen: FC = () => {
@@ -16,6 +17,7 @@ const OrderListScreen: FC = () => {
     "light") as keyof typeof Colors;
   const textColor: string = Colors[scheme].text;
   const secondaryText: string = Colors[scheme].secondaryText;
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("ongoing");
   const [ongoingOrders, setOngoingOrders] = useState<any[]>([]);
   const [completedOrders, setCompletedOrders] = useState([
@@ -24,11 +26,11 @@ const OrderListScreen: FC = () => {
       details: [
         {
           productId: "101",
-          name: "Wireless Earbuds A1",
+          name: "Badminton Racket",
           image: require("@/assets/images/product1.png"),
           quantity: 1,
-          price: 1290000,
-          discount: 15,
+          price: 1200000,
+          discount: 10,
         },
         {
           productId: "102",
@@ -86,7 +88,7 @@ const OrderListScreen: FC = () => {
               padding: 10,
             }}
           >
-            No ongoing order
+            {t("orders.noOngoing")}
           </ThemedText>
           <ThemedText
             type="default"
@@ -98,11 +100,10 @@ const OrderListScreen: FC = () => {
               paddingHorizontal: 30,
             }}
           >
-            We currently don&apos;t have any active orders in progress. Feel
-            free to explore our products and place a new order.
+            {t("orders.onDescription")}
           </ThemedText>
           <FullButton
-            text="Explore Products"
+            text={t("orders.explore")}
             onPress={() => {
               router.push("/");
             }}
@@ -131,7 +132,7 @@ const OrderListScreen: FC = () => {
               padding: 10,
             }}
           >
-            No completed order
+            {t("orders.noCompleted")}
           </ThemedText>
           <ThemedText
             type="default"
@@ -143,11 +144,10 @@ const OrderListScreen: FC = () => {
               paddingHorizontal: 30,
             }}
           >
-            We don&apos;t have any past orders that have been completed. Start
-            shopping now and create your first order with us.
+            {t("orders.compDescription")}
           </ThemedText>
           <FullButton
-            text="Explore Products"
+            text={t("orders.explore")}
             onPress={() => {
               router.push("/");
             }}
@@ -172,7 +172,7 @@ const OrderListScreen: FC = () => {
         <ThemedView style={styles.leftHeader}>
           <GoBackButton />
           <ThemedText type="title" style={{ fontSize: 20 }}>
-            Order History
+            {t("orders.title")}
           </ThemedText>
         </ThemedView>
       </ThemedView>
@@ -201,7 +201,7 @@ const OrderListScreen: FC = () => {
               },
             ]}
           >
-            Ongoing
+            {t("orders.ongoing")}
           </ThemedText>
         </Pressable>
         <Pressable
@@ -222,7 +222,7 @@ const OrderListScreen: FC = () => {
               },
             ]}
           >
-            Completed
+            {t("orders.completed")}
           </ThemedText>
         </Pressable>
       </ThemedView>

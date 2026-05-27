@@ -3,7 +3,8 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import React from "react";
-import { Pressable, StyleSheet } from "react-native";
+import { useTranslation } from "react-i18next";
+import { Alert, Pressable, StyleSheet } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
@@ -39,6 +40,7 @@ export default function OrderItem({ order }: Props) {
   const textColor: string = Colors[scheme].text;
   const secondaryText: string = Colors[scheme].secondaryText;
   const borderColor: string = Colors[scheme].border;
+  const { t } = useTranslation();
 
   const currentPrice: number =
     (order.details[0].price ?? 0) *
@@ -50,6 +52,23 @@ export default function OrderItem({ order }: Props) {
       return sum + itemPrice * item.quantity;
     }, 0) *
     (1 - (order.discount ?? 0) / 100);
+
+  const handleCancelOrder = () => {
+    Alert.alert(t("orders.cancelOrderTitle"), t("orders.cancelOrderMessage"), [
+      {
+        text: t("common.cancel"),
+        style: "cancel",
+      },
+      {
+        text: t("orders.confirmCancel"),
+        style: "destructive",
+        onPress: () => {
+          // TODO: Call API to cancel order
+          console.log("Order cancelled:", order.id);
+        },
+      },
+    ]);
+  };
 
   return (
     <Pressable
@@ -167,7 +186,7 @@ export default function OrderItem({ order }: Props) {
                     color: secondaryText,
                   }}
                 >
-                  + {order.details.length - 1} products
+                  + {order.details.length - 1} {t("orders.products")}
                 </ThemedText>
               ) : null}
               <ThemedView
@@ -180,7 +199,7 @@ export default function OrderItem({ order }: Props) {
                 <ThemedText
                   style={{ fontSize: 16, fontWeight: "700", color: textColor }}
                 >
-                  Total:
+                  {t("orders.total")}:
                 </ThemedText>
                 <ThemedText
                   style={{ fontSize: 16, fontWeight: "700", color: textColor }}
@@ -199,12 +218,12 @@ export default function OrderItem({ order }: Props) {
             style={{ paddingHorizontal: 12, flexDirection: "row", gap: 12 }}
           >
             <BorderButton
-              text="Buy Again"
+              text={t("orders.buyAgain")}
               onPress={() => {}}
               style={{ flex: 1 }}
             />
             <FullButton
-              text="Rate"
+              text={t("orders.rate")}
               onPress={() => {
                 router.push("/feedback");
               }}
@@ -220,7 +239,11 @@ export default function OrderItem({ order }: Props) {
               gap: 12,
             }}
           >
-            <FullButton text="Cancel" onPress={() => {}} style={{ flex: 1 }} />
+            <FullButton
+              text={t("orders.cancel")}
+              onPress={handleCancelOrder}
+              style={{ flex: 1 }}
+            />
           </ThemedView>
         ) : null}
       </ThemedView>
