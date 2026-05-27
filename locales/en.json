@@ -63,11 +63,17 @@
     "removeItem": "Remove item"
   },
   "categories": {
-    "electronics": "Electronics",
-    "apparel": "Apparel",
+    "rackets": "Rackets",
     "shoes": "Shoes",
     "clothes": "Clothes",
+    "shuttlecocks": "Shuttlecocks",
     "bags": "Bags",
     "other": "Other"
+  },
+  "chat": {
+    "title": "Chat",
+    "typeMessage": "Type your message...",
+    "startConversation": "Start a conversation to chat with sellers",
+    "chatWithSeller": "Chat with Seller"
   }
 }

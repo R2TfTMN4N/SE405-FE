@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "ShopEase",
+    "appName": "Shopease",
     "login": "Đăng nhập",
     "signup": "Đăng ký",
     "email": "Email hoặc Tên đăng nhập",
@@ -63,11 +63,17 @@
     "removeItem": "Xóa sản phẩm"
   },
   "categories": {
-    "electronics": "Điện tử",
-    "apparel": "Thời trang",
+    "rackets": "Vợt",
     "shoes": "Giày",
     "clothes": "Quần áo",
+    "shuttlecocks": "Cầu lông",
     "bags": "Túi",
     "other": "Khác"
+  },
+  "chat": {
+    "title": "Trò chuyện",
+    "typeMessage": "Nhập tin nhắn...",
+    "startConversation": "Bắt đầu cuộc trò chuyện với người bán",
+    "chatWithSeller": "Trò chuyện với người bán"
   }
 }

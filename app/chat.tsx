@@ -4,7 +4,8 @@ import GoBackButton from "@/components/ui/GoBackButton";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Feather } from "@expo/vector-icons";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -20,7 +21,7 @@ type Message = {
   content: string;
 };
 
-const staticMessages: Message[] = [
+const supportMessages: Message[] = [
   {
     id: "1",
     author: "support",
@@ -36,12 +37,30 @@ const staticMessages: Message[] = [
   },
 ];
 
+const sellerMessages: Message[] = [
+  {
+    id: "s1",
+    author: "support",
+    content: "Xin chào! Tôi là người bán. Bạn đang quan tâm sản phẩm nào?",
+  },
+  {
+    id: "s2",
+    author: "user",
+    content: "Cho mình hỏi tình trạng hàng còn không và thời gian giao?",
+  },
+  {
+    id: "s3",
+    author: "support",
+    content: "Sản phẩm còn hàng. Thời gian giao dự kiến từ 2-4 ngày làm việc.",
+  },
+];
+
 const ChatScreen: React.FC = () => {
   const scheme = useColorScheme() ?? "light";
   const palette = Colors[scheme];
   const [draft, setDraft] = useState("");
-
-  const messages = useMemo(() => staticMessages, []);
+  const { t } = useTranslation();
+  const [showSellerChat, setShowSellerChat] = useState(false);
 
   return (
     <ThemedView
@@ -51,7 +70,7 @@ const ChatScreen: React.FC = () => {
         <ThemedView style={styles.leftHeader}>
           <GoBackButton />
           <ThemedText type="title" style={{ fontSize: 20 }}>
-            Chatbot
+            {t("chat.title")}
           </ThemedText>
         </ThemedView>
       </ThemedView>
@@ -59,7 +78,7 @@ const ChatScreen: React.FC = () => {
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
       >
-        {messages.map((message) => {
+        {supportMessages.map((message) => {
           const isUser = message.author === "user";
           return (
             <ThemedView
@@ -69,6 +88,7 @@ const ChatScreen: React.FC = () => {
               <ThemedView
                 style={[
                   styles.bubble,
+                  isUser ? styles.bubbleUser : styles.bubbleSeller,
                   { backgroundColor: isUser ? palette.tint : palette.border },
                 ]}
               >
@@ -84,10 +104,85 @@ const ChatScreen: React.FC = () => {
             </ThemedView>
           );
         })}
+
+        {!showSellerChat && (
+          <ThemedView
+            style={[
+              styles.row,
+              { justifyContent: "center", marginVertical: 16 },
+            ]}
+          >
+            <Pressable
+              onPress={() => setShowSellerChat(true)}
+              style={[
+                styles.chatWithSellerBtn,
+                { backgroundColor: palette.tint },
+              ]}
+            >
+              <ThemedText
+                style={{ color: "#fff", fontWeight: "600", fontSize: 14 }}
+              >
+                {t("chat.chatWithSeller")}
+              </ThemedText>
+            </Pressable>
+          </ThemedView>
+        )}
+
+        {showSellerChat && (
+          <>
+            <ThemedView
+              style={[
+                styles.divider,
+                { borderTopColor: palette.border, marginVertical: 12 },
+              ]}
+            />
+            <ThemedView style={styles.dividerLabel}>
+              <ThemedText
+                style={[styles.dividerText, { color: palette.secondaryText }]}
+              >
+                {t("chat.chatWithSeller")}
+              </ThemedText>
+            </ThemedView>
+            <ThemedView
+              style={[
+                styles.divider,
+                { borderTopColor: palette.border, marginVertical: 12 },
+              ]}
+            />
+          </>
+        )}
+
+        {showSellerChat &&
+          sellerMessages.map((message) => {
+            const isUser = message.author === "user";
+            return (
+              <ThemedView
+                key={message.id}
+                style={[styles.row, isUser ? styles.rowEnd : styles.rowStart]}
+              >
+                <ThemedView
+                  style={[
+                    styles.bubble,
+                    isUser ? styles.bubbleUser : styles.bubbleSeller,
+                    { backgroundColor: isUser ? palette.tint : palette.border },
+                  ]}
+                >
+                  <ThemedText
+                    style={[
+                      styles.message,
+                      { color: isUser ? palette.background : palette.text },
+                    ]}
+                  >
+                    {message.content}
+                  </ThemedText>
+                </ThemedView>
+              </ThemedView>
+            );
+          })}
       </ScrollView>
 
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={90}
       >
         <ThemedView style={styles.inputContainer}>
@@ -104,7 +199,7 @@ const ChatScreen: React.FC = () => {
               style={[styles.input, { color: palette.text }]}
               value={draft}
               onChangeText={setDraft}
-              placeholder="Nhập tin nhắn"
+              placeholder={t("chat.typeMessage")}
               placeholderTextColor={palette.secondaryText}
               editable
             />
@@ -152,6 +247,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  divider: {
+    borderTopWidth: 1,
+  },
+  dividerLabel: {
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+  dividerText: {
+    fontSize: 13,
+    fontWeight: "600",
+  },
+  chatWithSellerBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 20,
+  },
   list: {
     padding: 16,
     gap: 12,
@@ -167,9 +278,20 @@ const styles = StyleSheet.create({
   },
   bubble: {
     maxWidth: "82%",
-    borderRadius: 16,
     paddingVertical: 10,
     paddingHorizontal: 14,
+  },
+  bubbleUser: {
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 0,
+  },
+  bubbleSeller: {
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 16,
   },
   message: {
     fontSize: 15,
