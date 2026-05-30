@@ -8,6 +8,7 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ColorSchemeName, StyleSheet } from "react-native";
 
 const Onboarding3Screen: React.FC = () => {
@@ -15,6 +16,7 @@ const Onboarding3Screen: React.FC = () => {
   const schemeRaw = useColorScheme() as ColorSchemeName | undefined | null;
   const scheme: keyof typeof Colors = (schemeRaw ??
     "light") as keyof typeof Colors;
+  const { t } = useTranslation();
 
   return (
     <ThemedView style={styles.container}>
@@ -30,7 +32,7 @@ const Onboarding3Screen: React.FC = () => {
           />
         </ThemedView>
         <ThemedText type="title" style={styles.heading}>
-          Safe and secure payments
+          {t("onboarding.safeAndSecurePayments")}
         </ThemedText>
         <ThemedText
           style={[
@@ -38,19 +40,18 @@ const Onboarding3Screen: React.FC = () => {
             { color: Colors[scheme].secondaryText, textAlign: "center" },
           ]}
         >
-          ShopEase employs industry-leading encryption and trusted payment
-          gateways to safeguard your financial information.
+          {t("onboarding.paymentsDescription")}
         </ThemedText>
         <ThemedView style={styles.buttonsContainer}>
           <BorderButton
-            text="Login"
+            text={t("common.login")}
             onPress={() => {
               router.push("/login");
             }}
             style={{ flex: 1 }}
           />
           <FullButton
-            text="Get Started"
+            text={t("common.getStarted")}
             onPress={() => {
               router.push("/signup");
             }}

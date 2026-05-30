@@ -6,6 +6,7 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   ColorSchemeName,
   ImageSourcePropType,
@@ -22,6 +23,7 @@ const Onboarding1Screen: React.FC = () => {
     scheme === "dark"
       ? require("@/assets/images/logo/dark-logo.png")
       : require("@/assets/images/logo/light-logo.png");
+  const { t } = useTranslation();
 
   return (
     <ThemedView style={styles.container}>
@@ -34,7 +36,7 @@ const Onboarding1Screen: React.FC = () => {
                 type="title"
                 style={[styles.title, { color: Colors[scheme].text }]}
               >
-                ShopEase
+                {t("common.appName")}
               </ThemedText>
             </ThemedView>
             <Pressable
@@ -46,7 +48,7 @@ const Onboarding1Screen: React.FC = () => {
                 type="link"
                 style={{ color: Colors[scheme].tint, fontSize: 16 }}
               >
-                Skip for now
+                {t("common.skipForNow")}
               </ThemedText>
             </Pressable>
           </ThemedView>
@@ -57,7 +59,7 @@ const Onboarding1Screen: React.FC = () => {
           />
         </ThemedView>
         <ThemedText type="title" style={styles.heading}>
-          Explore a wide range of products
+          {t("onboarding.exploreProducts")}
         </ThemedText>
         <ThemedText
           style={[
@@ -65,12 +67,11 @@ const Onboarding1Screen: React.FC = () => {
             { color: Colors[scheme].secondaryText, textAlign: "center" },
           ]}
         >
-          Explore a wide range of products at your fingertips. ShopEase offers
-          an extensive collection to suit your needs.
+          {t("onboarding.description")}
         </ThemedText>
         <ThemedView style={styles.buttonsContainer}>
           <FullButton
-            text="Next"
+            text={t("common.next")}
             onPress={() => {
               router.push("/onboarding/02" as any);
             }}
