@@ -6,16 +6,17 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import Slider from "@/components/ui/Slider";
 import {
   BRAND_OPTIONS,
-  CATEGORY_OPTIONS,
+  formatPrice,
+  getCategoryOptions,
   PRICE_RANGE,
   PRICE_STEP,
   type ProductFilters,
-  formatPrice,
 } from "@/constants/product-data";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -40,14 +41,15 @@ const SearchScreen: React.FC = () => {
       max: PRICE_RANGE.max,
     }),
   );
+  const { t } = useTranslation();
 
   const handleCategoryPress = (value?: number) => {
     setDraftFilters((prev) => {
       const next: ProductFilters = { ...prev };
-      if (value === undefined || prev.category === value) {
-        delete next.category;
+      if (value === undefined || prev.categoriesid === value) {
+        delete next.categoriesid;
       } else {
-        next.category = value;
+        next.categoriesid = value;
       }
       return next;
     });
@@ -119,7 +121,7 @@ const SearchScreen: React.FC = () => {
           : option.value === activeValue;
       return (
         <Pressable
-          key={option.label}
+          key={`${option.label}-${String(option.value)}`}
           onPress={() => onPress(option.value)}
           style={({ pressed }) => [
             styles.chip,
@@ -150,8 +152,8 @@ const SearchScreen: React.FC = () => {
       params.searchQuery = trimmedQuery;
     }
 
-    if (typeof draftFilters.category === "number") {
-      params.category = String(draftFilters.category);
+    if (typeof draftFilters.categoriesid === "number") {
+      params.categoriesid = String(draftFilters.categoriesid);
     }
 
     if (draftFilters.brand) {
@@ -177,6 +179,22 @@ const SearchScreen: React.FC = () => {
     router.push({ pathname: "/productList", params });
   };
 
+  const localizedCategoryOptions = useMemo(
+    () =>
+      getCategoryOptions().map((opt, idx) =>
+        idx === 0 ? { ...opt, label: t("products.all") } : opt,
+      ),
+    [t],
+  );
+
+  const localizedBrandOptions = useMemo(
+    () =>
+      BRAND_OPTIONS.map((opt, idx) =>
+        idx === 0 ? { ...opt, label: t("products.all") } : opt,
+      ),
+    [t],
+  );
+
   return (
     <ThemedView style={styles.container}>
       <Header mode="search" />
@@ -191,7 +209,7 @@ const SearchScreen: React.FC = () => {
           ]}
         >
           <TextInput
-            placeholder="Search..."
+            placeholder={t("search.search")}
             placeholderTextColor={palette.icon}
             style={[
               styles.searchInput,
@@ -247,37 +265,37 @@ const SearchScreen: React.FC = () => {
             ]}
           >
             <ThemedText type="defaultSemiBold" style={styles.sectionLabel}>
-              Category
+              {t("search.category")}
             </ThemedText>
             <ThemedView style={styles.chipGroup}>
               {renderChip<number>(
-                CATEGORY_OPTIONS,
-                draftFilters.category,
+                localizedCategoryOptions,
+                draftFilters.categoriesid,
                 handleCategoryPress,
               )}
             </ThemedView>
 
             <ThemedText type="defaultSemiBold" style={styles.sectionLabel}>
-              Brand
+              {t("search.brand")}
             </ThemedText>
             <ThemedView style={styles.chipGroup}>
               {renderChip<string>(
-                BRAND_OPTIONS,
+                localizedBrandOptions,
                 draftFilters.brand,
                 handleBrandPress,
               )}
             </ThemedView>
 
             <ThemedText type="defaultSemiBold" style={styles.sectionLabel}>
-              Price Range (VND)
+              {t("search.priceRange")}
             </ThemedText>
             <ThemedView style={styles.priceSection}>
               <ThemedView style={styles.rangeLabels}>
                 <ThemedText style={styles.rangeLabel}>
-                  Tối thiểu: {formatPrice(priceInputs.min)}
+                  {t("search.min")}: {formatPrice(priceInputs.min)}
                 </ThemedText>
                 <ThemedText style={styles.rangeLabel}>
-                  Tối đa: {formatPrice(priceInputs.max)}
+                  {t("search.max")}: {formatPrice(priceInputs.max)}
                 </ThemedText>
               </ThemedView>
               <ThemedView
@@ -287,7 +305,7 @@ const SearchScreen: React.FC = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <ThemedText>Min Price</ThemedText>
+                <ThemedText>{t("search.minPrice")}</ThemedText>
                 <Slider
                   style={styles.slider}
                   minimumValue={PRICE_RANGE.min}
@@ -307,7 +325,7 @@ const SearchScreen: React.FC = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <ThemedText>Max Price</ThemedText>
+                <ThemedText>{t("search.maxPrice")}</ThemedText>
                 <Slider
                   style={styles.slider}
                   minimumValue={PRICE_RANGE.min}
@@ -321,7 +339,7 @@ const SearchScreen: React.FC = () => {
                 />
               </ThemedView>
             </ThemedView>
-            <FullButton text="Apply" onPress={handleApplyFilters} />
+            <FullButton text={t("search.apply")} onPress={handleApplyFilters} />
           </ThemedView>
         </KeyboardAvoidingView>
       </Modal>

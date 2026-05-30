@@ -1,9 +1,12 @@
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { useEffect, useRef, useState, type ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   Animated,
@@ -12,14 +15,9 @@ import {
   View,
 } from "react-native";
 
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-
 export default function WelcomeScreen(): ReactElement {
+  const { t } = useTranslation();
   const router = useRouter();
-  useEffect(() => {
-    console.log("WelcomeScreen mounted");
-  }, []);
   const [progress, setProgress] = useState<number>(0);
   const [done, setDone] = useState<boolean>(false);
   const [checking, setChecking] = useState<boolean>(true);
@@ -58,14 +56,8 @@ export default function WelcomeScreen(): ReactElement {
           } catch (e) {
             console.warn("Failed to save welcome flag", e);
           }
-          // Temporary auto-login: skip onboarding/login and go straight to tabs.
-          try {
-            await AsyncStorage.setItem("loginToken", "dev-auto");
-          } catch (e) {
-            console.warn("Failed to set auto-login token", e);
-          }
           // router.replace expects a string path; cast to any only if necessary for router types
-          (router as any).replace("/(tabs)");
+          (router as any).replace("/onboarding");
         })();
       }
     }, tick);
@@ -99,7 +91,7 @@ export default function WelcomeScreen(): ReactElement {
       <ThemedView>
         <Image source={logoSrc} style={{ width: 200, height: 200 }} />
       </ThemedView>
-      <ThemedText type="title">ShopEase</ThemedText>
+      <ThemedText type="title">{t("common.appName")}</ThemedText>
       <View style={styles.progressContainer} pointerEvents="none">
         <ThemedView style={styles.progressBackground}>
           <Animated.View

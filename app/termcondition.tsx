@@ -5,8 +5,10 @@ import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import React, { FC } from "react";
 import { ScrollView, StyleSheet } from "react-native";
+import { useTranslation } from "react-i18next";
 
 const TermsAndConditionsScreen: FC = () => {
+  const { t } = useTranslation();
   const schemeRaw = useColorScheme();
   const scheme: keyof typeof Colors = (schemeRaw ??
     "light") as keyof typeof Colors;
@@ -19,7 +21,7 @@ const TermsAndConditionsScreen: FC = () => {
         <ThemedView style={styles.leftHeader}>
           <GoBackButton />
           <ThemedText type="title" style={{ fontSize: 20 }}>
-            Terms and Conditions
+            {t("terms.title")}
           </ThemedText>
         </ThemedView>
       </ThemedView>
@@ -28,305 +30,248 @@ const TermsAndConditionsScreen: FC = () => {
           type="title"
           style={{ fontSize: 24, marginBottom: 24, color: textColor }}
         >
-          Terms and Conditions
+          {t("terms.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          Welcome to ShopEase! These Terms and Conditions (&quot;Terms&quot;)
-          govern your use of our e-commerce app. By accessing or using ShopEase,
-          you agree to be bound by these Terms. Please read them carefully
-          before proceeding.
+          {t("terms.intro")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          1. Account Registration:
+          {t("terms.section1.title")}
+        </ThemedText>
+        <ThemedText
+          type="default"
+          style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
+        >
+          {t("terms.section1.bullet1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
           {" "}
-          - You must create an account to use certain features of ShopEase.
-        </ThemedText>
-        <ThemedText
-          type="default"
-          style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
-        >
-          {" "}
-          - You are responsible for providing accurate and up-to-date
-          information during the registration process.
+          {t("terms.section1.bullet2")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
           {" "}
-          - You must safeguard your account credentials and notify us
-          immediately of any unauthorized access or use of your account.
+          {t("terms.section1.bullet3")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          2. Product Information and Pricing:
+          {t("terms.section2.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - ShopEase strives to provide accurate product descriptions, images,
-          and pricing information.
+          {t("terms.section2.bullet1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - We reserve the right to modify product details and prices without
-          prior notice.
+          {t("terms.section2.bullet2")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - In the event of an error, we may cancel or refuse orders placed for
-          incorrectly priced products.
+          {t("terms.section2.bullet3")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          3. Order Placement and Fulfillment:
+          {t("terms.section3.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - By placing an order on ShopEase, you agree to purchase the selected
-          products at the stated price.
+          {t("terms.section3.bullet1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - We reserve the right to accept or reject any order, and we may
-          cancel orders due to product unavailability, pricing errors, or
-          suspected fraudulent activity.
+          {t("terms.section3.bullet2")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - Once an order is confirmed, we will make reasonable efforts to
-          fulfill and deliver it in a timely manner.
+          {t("terms.section3.bullet3")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          4. Payment:
+          {t("terms.section4.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - ShopEase supports various payment methods, including credit/debit
-          cards and online payment platforms.
+          {t("terms.section4.bullet1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - By providing payment information, you represent and warrant that you
-          are authorized to use the chosen payment method.
+          {t("terms.section4.bullet2")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - All payments are subject to verification and approval by relevant
-          financial institutions.
+          {t("terms.section4.bullet3")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          5. Shipping and Delivery:
+          {t("terms.section5.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - ShopEase will make reasonable efforts to ensure timely delivery of
-          products.
+          {t("terms.section5.bullet1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - Shipping times may vary based on factors beyond our control, such as
-          location, weather conditions, or carrier delays.
+          {t("terms.section5.bullet2")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - Risk of loss or damage to products passes to you upon delivery.
+          {t("terms.section5.bullet3")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          6. Returns and Refunds:
+          {t("terms.section6.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - ShopEase&apos;s return and refund policies are outlined separately
-          and govern the process for returning products and seeking refunds.
+          {t("terms.section6.bullet1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - Certain products may be non-returnable or subject to specific
-          conditions.
+          {t("terms.section6.bullet2")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          7. Intellectual Property:
+          {t("terms.section7.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - ShopEase and its content, including logos, trademarks, text, images,
-          and software, are protected by intellectual property rights.
+          {t("terms.section7.bullet1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - You may not use, reproduce, modify, distribute, or display any part
-          of ShopEase without our prior written consent.
+          {t("terms.section7.bullet2")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          8. User Conduct:
+          {t("terms.section8.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - You agree to use ShopEase in compliance with applicable laws and
-          regulations.
+          {t("terms.section8.bullet1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - You will not engage in any activity that disrupts or interferes with
-          the functioning of ShopEase or infringes upon the rights of others.
+          {t("terms.section8.bullet2")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - Any unauthorized use or attempt to access restricted areas or user
-          accounts is strictly prohibited.
+          {t("terms.section8.bullet3")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          9. Limitation of Liability:
+          {t("terms.section9.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - ShopEase and its affiliates shall not be liable for any direct,
-          indirect, incidental, consequential, or punitive damages arising from
-          the use or inability to use our app or any products purchased through
-          it.
+          {t("terms.section9.bullet1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - We do not guarantee the accuracy, completeness, or reliability of
-          information provided on ShopEase.
+          {t("terms.section9.bullet2")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          10. Governing Law:
+          {t("terms.section10.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - These Terms shall be governed by and construed in accordance with
-          the laws of [Jurisdiction].
+          {t("terms.section10.bullet1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - Any disputes arising out of or relating to these Terms shall be
-          resolved in the courts of [Jurisdiction].
+          {t("terms.section10.bullet2")}.
         </ThemedText>
 
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: textColor }}
         >
-          If you have any questions or concerns regarding these Terms and
-          Conditions, please contact our customer support. By using ShopEase,
-          you acknowledge that you have read, understood, and agreed to these
-          Terms and Conditions.
+          {t("terms.footer")}
         </ThemedText>
       </ScrollView>
     </ThemedView>

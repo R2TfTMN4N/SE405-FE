@@ -1,4 +1,5 @@
-import "@/i18n"; // Initialize i18n
+import { Colors } from "@/constants/theme";
+import "@/i18n";
 import {
   DarkTheme,
   DefaultTheme,
@@ -10,10 +11,12 @@ import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import "react-native-reanimated";
 
-import { Colors } from "@/constants/theme";
+import { AuthProvider } from "@/app/providers/AuthProvider";
+import { ThemePreferenceProvider } from "@/app/providers/ThemePreferenceProvider";
+import { ToastProvider } from "@/app/providers/ToastProvider";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { ThemePreferenceProvider } from "./providers/ThemePreferenceProvider";
 import WelcomeScreen from "./welcome";
+
 export const unstable_settings = {
   anchor: "welcome",
 };
@@ -62,115 +65,146 @@ export default function RootLayout() {
 
   return (
     <ThemePreferenceProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: Colors[colorScheme ?? "light"].background,
-          }}
-        >
-          {!stackReady ? (
-            <WelcomeScreen />
-          ) : (
-            <Stack>
-              <Stack.Screen
-                name="welcome"
-                options={{ headerShown: false, gestureEnabled: false }}
-              />
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="modal"
-                options={{ presentation: "modal", title: "Modal" }}
-              />
-              <Stack.Screen
-                name="changepassword/01"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="changepassword/02"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="faqs" options={{ headerShown: false }} />
-              <Stack.Screen name="chat" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="termcondition"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="privacy" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="productList"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="search" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="product/[id]"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="login" options={{ headerShown: false }} />
-              <Stack.Screen name="signup" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="forgotPassword/index"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="forgotPassword/emailVerification"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="forgotPassword/setNewPassword"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="forgotPassword/success"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="onboarding/index"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="onboarding/02"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="onboarding/03"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="checkout/index"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="checkout/payment"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="checkout/review"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="checkout/items"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="checkout/result"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="shippingAddress"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="orderList" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="order/[id]"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="feedback" options={{ headerShown: false }} />
-            </Stack>
-          )}
-          <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-        </View>
-      </ThemeProvider>
+      <ToastProvider>
+        <AuthProvider>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: Colors[colorScheme ?? "light"].background,
+              }}
+            >
+              {!stackReady ? (
+                <WelcomeScreen />
+              ) : (
+                <Stack>
+                  <Stack.Screen
+                    name="welcome"
+                    options={{ headerShown: false, gestureEnabled: false }}
+                  />
+                  <Stack.Screen
+                    name="(tabs)"
+                    options={{ headerShown: false, gestureEnabled: false }}
+                  />
+                  <Stack.Screen
+                    name="modal"
+                    options={{ presentation: "modal", title: "Modal" }}
+                  />
+                  <Stack.Screen
+                    name="changepassword/01"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="changepassword/02"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen name="faqs" options={{ headerShown: false }} />
+                  <Stack.Screen name="chat" options={{ headerShown: false }} />
+                  <Stack.Screen
+                    name="termcondition"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="privacy"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="productList"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="search"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="product/[id]"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="login"
+                    options={{ headerShown: false, gestureEnabled: false }}
+                  />
+                  <Stack.Screen
+                    name="signup"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="forgotPassword/index"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="forgotPassword/emailVerification"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="forgotPassword/setNewPassword"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="forgotPassword/success"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="onboarding/index"
+                    options={{ headerShown: false, gestureEnabled: false }}
+                  />
+                  <Stack.Screen
+                    name="onboarding/02"
+                    options={{ headerShown: false, gestureEnabled: false }}
+                  />
+                  <Stack.Screen
+                    name="onboarding/03"
+                    options={{ headerShown: false, gestureEnabled: false }}
+                  />
+                  <Stack.Screen
+                    name="checkout/index"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="checkout/payment"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="checkout/review"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="checkout/items"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="checkout/result"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="shippingAddress"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="orderList"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="order/[id]"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="feedback"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="notifications"
+                    options={{ headerShown: false }}
+                  />
+                </Stack>
+              )}
+              <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+            </View>
+          </ThemeProvider>
+        </AuthProvider>
+      </ToastProvider>
     </ThemePreferenceProvider>
   );
 }

@@ -4,6 +4,7 @@ import GoBackButton from "@/components/ui/GoBackButton";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet } from "react-native";
 
 const PrivacyPolicyScreen: FC = () => {
@@ -13,211 +14,173 @@ const PrivacyPolicyScreen: FC = () => {
   const textColor: string = Colors[scheme].text;
   const secondaryText: string = Colors[scheme].secondaryText;
 
+  const { t } = useTranslation();
+
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.headerContainer}>
         <ThemedView style={styles.leftHeader}>
           <GoBackButton />
           <ThemedText type="title" style={{ fontSize: 20 }}>
-            Privacy Policy
+            {t("privacy.title")}
           </ThemedText>
         </ThemedView>
       </ThemedView>
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <ThemedText
           type="title"
           style={{ fontSize: 24, marginBottom: 24, color: textColor }}
         >
-          Privacy Policy
+          {t("privacy.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          At ShopEase, we are committed to protecting the privacy and security
-          of our users&apos; personal information. This Privacy Policy outlines
-          how we collect, use, disclose, and safeguard the information obtained
-          through our e-commerce app. By using ShopEase, you consent to the
-          practices described in this policy.
+          {t("privacy.intro")}{" "}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          1. Information Collection:
+          {" "}
+          {t("privacy.section1.title")}{" "}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - Personal Information: We may collect personal information such as
-          name, address, email, and phone number when you create an account,
-          make a purchase, or interact with our services.
+          {t("privacy.section1.item1")}
         </ThemedText>
+
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - Transaction Details: We collect information related to your
-          purchases, including order history, payment method, and shipping
-          details.
+          {t("privacy.section1.item2")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - Usage Data: We may collect data on how you interact with our app,
-          such as browsing activity, search queries, and preferences.
+          {t("privacy.section1.item3")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          2. Information Use:
+          {" "}
+          {t("privacy.section2.title")}{" "}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - Provide Services: We use the collected information to process
-          orders, deliver products, and provide customer support.
+          {t("privacy.section2.item1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - Personalization: We may use your information to personalize your
-          shopping experience, recommend products, and display targeted
-          advertisements.
+          {t("privacy.section2.item2")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - Communication: We may use your contact information to send important
-          updates, promotional offers, and newsletters. You can opt-out of these
-          communications at any time.
+          {t("privacy.section2.item3")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          3. Information Sharing:
+          {t("privacy.section3.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - Third-Party Service Providers: We may share your information with
-          trusted third-party service providers who assist us in operating our
-          app, fulfilling orders, and improving our services.
+          {t("privacy.section3.item1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - Legal Compliance: We may disclose personal information if required
-          by law or in response to a valid legal request from authorities.
+          {t("privacy.section3.item2")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          4. Data Security:
+          {t("privacy.section4.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - We implement appropriate security measures to protect your
-          information from unauthorized access, alteration, disclosure, or
-          destruction.
+          {t("privacy.section4.item1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - However, please note that no data transmission over the internet or
-          electronic storage is 100% secure. We cannot guarantee absolute
-          security of your information.
+          {t("privacy.section4.item2")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          5. User Rights:
+          {t("privacy.section5.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 5, color: secondaryText }}
         >
-          {" "}
-          - Access and Update: You have the right to access, correct, or update
-          your personal information stored in our app.
+          {t("privacy.section5.item1")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - Data Retention: We retain your personal information as long as
-          necessary to provide our services and comply with legal obligations.
+          {t("privacy.section5.item2")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          6. Children&apos;s Privacy:
+          {t("privacy.section6.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - ShopEase is not intended for children under the age of 13. We do not
-          knowingly collect or solicit personal information from children.
+          {t("privacy.section6.item1")}
         </ThemedText>
 
         <ThemedText
           type="title"
           style={{ fontSize: 18, marginBottom: 5, color: textColor }}
         >
-          7. Updates to the Privacy Policy:
+          {t("privacy.section7.title")}
         </ThemedText>
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: secondaryText }}
         >
-          {" "}
-          - We reserve the right to update this Privacy Policy from time to
-          time. Any changes will be posted on our app, and the revised policy
-          will be effective upon posting.
+          {t("privacy.section7.item1")}
         </ThemedText>
-
         <ThemedText
           type="default"
           style={{ fontSize: 16, marginBottom: 24, color: textColor }}
         >
-          If you have any questions or concerns about our Privacy Policy, please
-          contact our customer support. By using ShopEase, you acknowledge that
-          you have read and understood this Privacy Policy and agree to its
-          terms and conditions.
+          {t("privacy.outro")}
         </ThemedText>
       </ScrollView>
     </ThemedView>
