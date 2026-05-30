@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { ImageSourcePropType } from "react-native";
 
 export type Product = {
@@ -6,12 +7,12 @@ export type Product = {
   price: number;
   discount?: number;
   image: ImageSourcePropType;
-  category?: number;
+  categoriesid?: number;
   brand?: string;
 };
 
 export type ProductFilters = {
-  category?: number;
+  categoriesid?: number;
   searchQuery?: string;
   brand?: string;
   minPrice?: number;
@@ -21,46 +22,46 @@ export type ProductFilters = {
 export const PRODUCT_DATA: Product[] = [
   {
     id: "1",
-    name: "Wireless Earbuds A1",
-    price: 1290000,
-    discount: 15,
+    name: " Shoes",
+    price: 3200000,
+    discount: 20,
     image: require("../assets/images/product1.png"),
-    category: 1,
-    brand: "SoundMax",
+    categoriesid: 1,
+    brand: "SHoes",
   },
   {
     id: "2",
-    name: "Cotton Tee Classic",
-    price: 320000,
+    name: "   Giày Lining Sonic Boom",
+    price: 2900000,
     discount: 10,
     image: require("../assets/images/product1.png"),
-    category: 2,
-    brand: "Northwind",
+    categoriesid: 1,
+    brand: "Lining",
   },
   {
     id: "3",
-    name: "Running Sneakers Flex",
-    price: 1900000,
+    name: "Giày  ",
+    price: 2100000,
     image: require("../assets/images/product1.png"),
-    category: 3,
-    brand: "Stride",
+    categoriesid: 3,
+    brand: "Victor",
   },
   {
     id: "4",
-    name: "City Backpack 20L",
-    price: 780000,
-    discount: 12,
+    name: "Áo  ",
+    price: 850000,
+    discount: 15,
     image: require("../assets/images/product1.png"),
-    category: 4,
-    brand: "TrailPro",
+    categoriesid: 4,
+    brand: "Adidas",
   },
   {
     id: "5",
-    name: "Ceramic Desk Lamp",
-    price: 650000,
+    name: "Balo Adidas Barricade",
+    price: 950000,
     image: require("../assets/images/product1.png"),
-    category: 5,
-    brand: "Lumen",
+    categoriesid: 5,
+    brand: "Adidas",
   },
 ];
 
@@ -75,29 +76,32 @@ export const PRICE_RANGE = (() => {
 })();
 
 export const CATEGORY_LABEL_MAP: Record<number, string> = {
-  1: "Electronics",
-  2: "Apparel",
-  3: "Footwear",
-  4: "Bags",
-  5: "Home",
+  1: t("categories.rackets"),
+  5: t("categories.shuttlecocks"),
+  2: t("categories.shoes"),
+  3: t("categories.clothes"),
+  4: t("categories.bags"),
+  6: t("categories.other"),
 };
 
-export const CATEGORY_OPTIONS: { label: string; value?: number }[] = [
-  { label: "All", value: undefined },
-  { label: CATEGORY_LABEL_MAP[1], value: 1 },
-  { label: CATEGORY_LABEL_MAP[2], value: 2 },
-  { label: CATEGORY_LABEL_MAP[3], value: 3 },
-  { label: CATEGORY_LABEL_MAP[4], value: 4 },
-  { label: CATEGORY_LABEL_MAP[5], value: 5 },
-];
+export const getCategoryOptions = (): { label: string; value?: number }[] => {
+  return [
+    { label: t("products.all"), value: undefined },
+    { label: t("categories.rackets"), value: 1 },
+    { label: t("categories.shuttlecocks"), value: 5 },
+    { label: t("categories.shoes"), value: 2 },
+    { label: t("categories.clothes"), value: 3 },
+    { label: t("categories.bags"), value: 4 },
+    { label: t("categories.other"), value: 6 },
+  ];
+};
 
 export const BRAND_OPTIONS: { label: string; value?: string }[] = [
-  { label: "All", value: undefined },
-  { label: "SoundMax", value: "SoundMax" },
-  { label: "Northwind", value: "Northwind" },
-  { label: "Stride", value: "Stride" },
-  { label: "TrailPro", value: "TrailPro" },
-  { label: "Lumen", value: "Lumen" },
+  { label: t("products.all"), value: undefined },
+  { label: "Apple", value: "Apple" },
+  { label: "Samsung", value: "Samsung" },
+  { label: "Xiaomi", value: "Xiaomi" },
+  { label: "Vivo", value: "Vivo" },
 ];
 
 export const formatPrice = (value: number) =>
