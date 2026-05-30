@@ -3,12 +3,15 @@ import { ThemedView } from "@/components/themed-view";
 import BagsIcon from "@/components/ui/categoryIcon/BagsIcon";
 import ClothesIcon from "@/components/ui/categoryIcon/ClothesIcon";
 import OtherIcon from "@/components/ui/categoryIcon/OtherIcon";
+import RacketIcon from "@/components/ui/categoryIcon/RacketIcon";
 import ShoesIcon from "@/components/ui/categoryIcon/ShoesIcon";
+import ShuttlecockIcon from "@/components/ui/categoryIcon/ShuttlecockIcon";
 import GoBackButton from "@/components/ui/GoBackButton";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   ColorSchemeName,
   FlatList,
@@ -20,6 +23,7 @@ import {
 
 export default function CategoriesScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const schemeRaw = useColorScheme() as ColorSchemeName | null | undefined;
   const scheme: keyof typeof Colors = (schemeRaw ??
     "light") as keyof typeof Colors;
@@ -27,20 +31,41 @@ export default function CategoriesScreen() {
   const categories = [
     {
       id: "1",
-      name: "Electronics",
+      name: t("categories.rackets"),
+      image: <ClothesIcon width={60} height={60} />,
+    },
+    {
+      id: "5",
+      name: t("categories.shuttlecocks"),
+      image: <ClothesIcon width={60} height={60} />,
+    },
+    {
+      id: "2",
+      name: t("categories.shoes"),
+      image: <ClothesIcon width={60} height={60} />,
+    },
+    {
+      id: "3",
+      name: t("categories.clothes"),
+      image: <ClothesIcon width={60} height={60} />,
+    },
+    {
+      id: "4",
+      name: t("categories.bags"),
+      image: <ClothesIcon width={60} height={60} />,
+    },
+    {
+      id: "6",
+      name: t("categories.other"),
       image: <OtherIcon width={60} height={60} />,
     },
-    { id: "2", name: "Apparel", image: <ClothesIcon width={60} height={60} /> },
-    { id: "3", name: "Footwear", image: <ShoesIcon width={60} height={60} /> },
-    { id: "4", name: "Bags", image: <BagsIcon width={60} height={60} /> },
-    { id: "5", name: "Home", image: <OtherIcon width={60} height={60} /> },
   ];
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.headerContainer}>
         <GoBackButton />
         <ThemedText type="title" style={{ fontSize: 20 }}>
-          Categories
+          {t("categories.title")}
         </ThemedText>
       </ThemedView>
       <FlatList
@@ -54,7 +79,7 @@ export default function CategoriesScreen() {
             onPress={() => {
               router.push({
                 pathname: "/productList",
-                params: { category: item.id },
+                params: { categoriesid: item.id },
               });
             }}
           >

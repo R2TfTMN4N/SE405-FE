@@ -1,3 +1,5 @@
+import { useAuth } from "@/app/providers/AuthProvider";
+import { useThemePreference } from "@/app/providers/ThemePreferenceProvider";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import CustomSwitch from "@/components/ui/CustomSwitch";
@@ -5,9 +7,12 @@ import LanguageSelector from "@/components/ui/LanguageSelector";
 import ProfileMenuItem from "@/components/ui/ProfileMenuItem";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { getUserById } from "@/services/userService";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import React from "react";
+import { jwtDecode } from "jwt-decode";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Alert,
@@ -19,11 +24,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useThemePreference } from "../providers/ThemePreferenceProvider";
 
 const ProfileScreen: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const { signOut } = useAuth();
   const schemeRaw = useColorScheme() as ColorSchemeName | null | undefined;
   const scheme: keyof typeof Colors = (schemeRaw ??
     "light") as keyof typeof Colors;
@@ -36,15 +41,34 @@ const ProfileScreen: React.FC = () => {
     if (!themePref) return;
     themePref.setPreference(v ? "dark" : "light");
   };
-  const [userInfo, setUserInfo] = React.useState<{
-    name: string;
-    email: string;
-    avatar?: string;
-  }>({
-    name: "Nguyễn Văn A",
-    email: "nguyenvana@gmail.com",
-    avatar: undefined,
-  });
+  const [userInfo, setUserInfo] = React.useState<any>({});
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const token = await AsyncStorage.getItem("loginToken");
+      const decodedToken = jwtDecode(token || "") as any;
+      const userid = decodedToken.userid;
+      const user = await getUserById(userid);
+      if (user) {
+        setUserInfo(user);
+      }
+    };
+    getUserInfo();
+  }, []);
+
+  const handleLogout = async () => {
+    Alert.alert(t("profile.logout"), t("profile.logoutConfirmation"), [
+      { text: t("common.cancel"), onPress: () => {}, style: "cancel" },
+      {
+        text: t("profile.logout"),
+        onPress: async () => {
+          await AsyncStorage.removeItem("password");
+          await signOut();
+          // AuthProvider will handle navigation automatically
+        },
+        style: "destructive",
+      },
+    ]);
+  };
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: tint }]}>
@@ -62,7 +86,7 @@ const ProfileScreen: React.FC = () => {
           <ThemedText style={styles.userName}>{userInfo.name}</ThemedText>
           <ThemedText style={styles.userEmail}>{userInfo.email}</ThemedText>
         </ThemedView>
-        <TouchableOpacity onPress={() => Alert.alert("Đăng xuất!")}>
+        <TouchableOpacity onPress={handleLogout}>
           <Ionicons name="log-out-outline" size={30} color="#FFFFFF" />
         </TouchableOpacity>
       </ThemedView>
@@ -73,42 +97,42 @@ const ProfileScreen: React.FC = () => {
       >
         <ThemedView style={styles.section}>
           <ThemedText style={[styles.sectionTitle, { color: textColor }]}>
-            Personal Information
+            {t("profile.personalInformation")}
           </ThemedText>
           <ProfileMenuItem
             icon="box"
-            name="Shipping Address"
+            name={t("profile.shippingAddress")}
             onPress={() => router.push("/shippingAddress" as any)}
           />
           <ProfileMenuItem
             icon="clipboard"
-            name="Order History"
+            name={t("profile.orderHistory")}
             onPress={() => router.push("/orderList" as any)}
           />
         </ThemedView>
 
         <ThemedView style={styles.section}>
           <ThemedText style={[styles.sectionTitle, { color: textColor }]}>
-            Support & Information
+            {t("profile.supportInformation")}
           </ThemedText>
           <ProfileMenuItem
             icon="shield"
-            name="Privacy Policy"
+            name={t("profile.privacyPolicy")}
             onPress={() => router.push("/privacy" as any)}
           />
           <ProfileMenuItem
             icon="file-text"
-            name="Terms & Conditions"
+            name={t("profile.termsAndConditions")}
             onPress={() => router.push("/termcondition" as any)}
           />
           <ProfileMenuItem
             icon="help-circle"
-            name="FAQs"
+            name={t("profile.faqs")}
             onPress={() => router.push("/faqs" as any)}
           />
           <ProfileMenuItem
             icon="message-circle"
-            name="Chatbot"
+            name={t("profile.chatbot")}
             onPress={() => router.push("/chat" as any)}
           />
         </ThemedView>
@@ -119,17 +143,16 @@ const ProfileScreen: React.FC = () => {
           </ThemedText>
           <ProfileMenuItem
             icon="lock"
-            name="Change Password"
+            name={t("profile.changePassword")}
             onPress={() => router.push("/changepassword/01" as any)}
           />
           <CustomSwitch
             icon="moon"
-            name="Dark Theme"
+            name={t("profile.darkTheme")}
             value={!!isDarkTheme}
             onValueChange={setTheme}
           />
         </ThemedView>
-
         <ThemedView style={styles.section}>
           <ThemedText style={[styles.sectionTitle, { color: textColor }]}>
             {t("profile.language")}
