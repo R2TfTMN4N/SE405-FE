@@ -5,21 +5,19 @@ import FullButton from "@/components/ui/FullButton";
 import GoBackButton from "@/components/ui/GoBackButton";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import ProductCard from "@/components/ui/ProductCard";
-import Slider from "@/components/ui/Slider";
 import {
   CATEGORY_LABEL_MAP,
-  formatPrice,
-  getCategoryOptions,
+  PRICE_RANGE,
   PRICE_STEP,
+  PRODUCT_DATA,
   type ProductFilters,
+  formatPrice,
 } from "@/constants/product-data";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { getCurrentLanguage } from "@/i18n";
-import { getAllProducts } from "@/services/productService";
+import Slider from "@react-native-community/slider";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -40,27 +38,11 @@ type ProductListRouteParams = Partial<
 >;
 
 const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
-  const { t } = useTranslation();
-  const language = getCurrentLanguage();
   const scheme = useColorScheme() ?? "light";
   const palette = Colors[scheme];
   const params = useLocalSearchParams<ProductListRouteParams>();
   const [searchMode, setSearchMode] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [productList, setProductList] = useState<any[]>([]);
-  const categoryOptions = getCategoryOptions();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const productsResponse = await getAllProducts(language);
-        setProductList(productsResponse);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const normalizeParam = (value?: string | string[]) =>
     Array.isArray(value) ? value[0] : value;
@@ -68,16 +50,16 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
   const routeFilters = useMemo<ProductFilters>(() => {
     const next: ProductFilters = {};
 
-    const categoriesid = normalizeParam(params.categoriesid);
+    const category = normalizeParam(params.category);
     const brand = normalizeParam(params.brand);
     const searchQuery = normalizeParam(params.searchQuery);
     const minPrice = normalizeParam(params.minPrice);
     const maxPrice = normalizeParam(params.maxPrice);
 
-    if (categoriesid !== undefined) {
-      const parsedCategory = Number(categoriesid);
+    if (category !== undefined) {
+      const parsedCategory = Number(category);
       if (!Number.isNaN(parsedCategory)) {
-        next.categoriesid = parsedCategory;
+        next.category = parsedCategory;
       }
     }
     if (brand) {
@@ -98,10 +80,11 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
         next.maxPrice = parsed;
       }
     }
+
     return next;
   }, [
     params.brand,
-    params.categoriesid,
+    params.category,
     params.maxPrice,
     params.minPrice,
     params.searchQuery,
@@ -117,39 +100,10 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
   const [appliedFilters, setAppliedFilters] = useState<ProductFilters>(
     () => mergedFilters,
   );
-
-  const computedRange = useMemo(() => {
-    const prices = productList
-      .map((p) => Number(p?.price))
-      .filter((n) => Number.isFinite(n));
-    if (prices.length === 0) return { min: 0, max: PRICE_STEP * 20 };
-    const minPrice = Math.min(...prices);
-    const maxPrice = Math.max(...prices);
-    const roundedMin = Math.floor(minPrice / PRICE_STEP) * PRICE_STEP;
-    const roundedMax = Math.ceil(maxPrice / PRICE_STEP) * PRICE_STEP;
-    return {
-      min: roundedMin,
-      max: Math.max(roundedMax, roundedMin + PRICE_STEP),
-    };
-  }, [productList]);
-
-  const brandOptions = useMemo(() => {
-    const set = new Set<string>();
-    for (const p of productList) {
-      const b = (p?.brand ?? "").toString().trim();
-      if (b) set.add(b);
-    }
-    const brands = Array.from(set).sort((a, b) => a.localeCompare(b));
-    return [
-      { label: "All", value: undefined as string | undefined },
-      ...brands.map((b) => ({ label: b, value: b })),
-    ];
-  }, [productList]);
-
   const [priceInputs, setPriceInputs] = useState<{ min: number; max: number }>(
     () => ({
-      min: mergedFilters.minPrice ?? computedRange.min,
-      max: mergedFilters.maxPrice ?? computedRange.max,
+      min: mergedFilters.minPrice ?? PRICE_RANGE.min,
+      max: mergedFilters.maxPrice ?? PRICE_RANGE.max,
     }),
   );
 
@@ -157,30 +111,17 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
     setDraftFilters(mergedFilters);
     setAppliedFilters(mergedFilters);
     setPriceInputs({
-      min: mergedFilters.minPrice ?? computedRange.min,
-      max: mergedFilters.maxPrice ?? computedRange.max,
+      min: mergedFilters.minPrice ?? PRICE_RANGE.min,
+      max: mergedFilters.maxPrice ?? PRICE_RANGE.max,
     });
-  }, [mergedFilters, computedRange.min, computedRange.max]);
-
-  useEffect(() => {
-    setPriceInputs((prev) => ({
-      min: appliedFilters.minPrice ?? computedRange.min,
-      max: appliedFilters.maxPrice ?? computedRange.max,
-    }));
-  }, [
-    computedRange.min,
-    computedRange.max,
-    appliedFilters.minPrice,
-    appliedFilters.maxPrice,
-  ]);
+  }, [mergedFilters]);
 
   const products = useMemo(() => {
     const query = appliedFilters.searchQuery?.trim().toLowerCase();
 
-    return productList.filter((product) => {
-      const name = product.translations?.[0]?.name || product.name || "";
-      const matchesCategoriesId = appliedFilters.categoriesid
-        ? product.categoriesid === appliedFilters.categoriesid
+    return PRODUCT_DATA.filter((product) => {
+      const matchesCategory = appliedFilters.category
+        ? product.category === appliedFilters.category
         : true;
       const matchesBrand = appliedFilters.brand
         ? product.brand === appliedFilters.brand
@@ -193,17 +134,19 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
         typeof appliedFilters.maxPrice === "number"
           ? product.price <= appliedFilters.maxPrice
           : true;
-      const matchesQuery = query ? name.toLowerCase().includes(query) : true;
+      const matchesQuery = query
+        ? product.name.toLowerCase().includes(query)
+        : true;
 
       return (
-        matchesCategoriesId &&
+        matchesCategory &&
         matchesBrand &&
         matchesMinPrice &&
         matchesMaxPrice &&
         matchesQuery
       );
     });
-  }, [appliedFilters, productList]);
+  }, [appliedFilters]);
 
   const title = useMemo(() => {
     const trimmedQuery = appliedFilters.searchQuery?.trim();
@@ -211,15 +154,15 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
       return trimmedQuery;
     }
 
-    if (typeof appliedFilters.categoriesid === "number") {
-      const categoryLabel = CATEGORY_LABEL_MAP[appliedFilters.categoriesid];
+    if (typeof appliedFilters.category === "number") {
+      const categoryLabel = CATEGORY_LABEL_MAP[appliedFilters.category];
       if (categoryLabel) {
         return categoryLabel;
       }
     }
 
-    return undefined;
-  }, [appliedFilters.categoriesid, appliedFilters.searchQuery]);
+    return "All";
+  }, [appliedFilters.category, appliedFilters.searchQuery]);
 
   const handleSearchChange = (value: string) => {
     if (value.length === 0 || value.trim().length > 0) {
@@ -247,13 +190,13 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
     Keyboard.dismiss();
   };
 
-  const handleCategoriesIdPress = (value?: number) => {
+  const handleCategoryPress = (value?: number) => {
     setDraftFilters((prev) => {
       const next: ProductFilters = { ...prev };
-      if (value === undefined || prev.categoriesid === value) {
-        delete next.categoriesid;
+      if (value === undefined || prev.category === value) {
+        delete next.category;
       } else {
-        next.categoriesid = value;
+        next.category = value;
       }
       return next;
     });
@@ -274,13 +217,13 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
   const updatePriceDraft = (minValue: number, maxValue: number) => {
     setDraftFilters((prev) => {
       const next: ProductFilters = { ...prev };
-      if (minValue <= computedRange.min) {
+      if (minValue <= PRICE_RANGE.min) {
         delete next.minPrice;
       } else {
         next.minPrice = minValue;
       }
 
-      if (maxValue >= computedRange.max) {
+      if (maxValue >= PRICE_RANGE.max) {
         delete next.maxPrice;
       } else {
         next.maxPrice = maxValue;
@@ -322,7 +265,7 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
   const handleClearFilters = () => {
     setDraftFilters({});
     setAppliedFilters({});
-    setPriceInputs({ min: computedRange.min, max: computedRange.max });
+    setPriceInputs({ min: PRICE_RANGE.min, max: PRICE_RANGE.max });
     setIsModalVisible(false);
     setSearchMode(false);
     Keyboard.dismiss();
@@ -363,6 +306,24 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
       );
     });
 
+  const CATEGORY_OPTIONS: { label: string; value?: number }[] = [
+    { label: "All", value: undefined },
+    { label: CATEGORY_LABEL_MAP[1], value: 1 },
+    { label: CATEGORY_LABEL_MAP[2], value: 2 },
+    { label: CATEGORY_LABEL_MAP[3], value: 3 },
+    { label: CATEGORY_LABEL_MAP[4], value: 4 },
+    { label: CATEGORY_LABEL_MAP[5], value: 5 },
+  ];
+
+  const BRAND_OPTIONS: { label: string; value?: string }[] = [
+    { label: "All", value: undefined },
+    { label: "SoundMax", value: "SoundMax" },
+    { label: "Northwind", value: "Northwind" },
+    { label: "Stride", value: "Stride" },
+    { label: "TrailPro", value: "TrailPro" },
+    { label: "Lumen", value: "Lumen" },
+  ];
+
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.headerContainer}>
@@ -392,7 +353,7 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
         <ThemedView style={styles.filterSection}>
           {searchMode && (
             <TextInput
-              placeholder={t("products.search")}
+              placeholder="Search"
               placeholderTextColor={palette.secondaryText}
               value={draftFilters.searchQuery ?? ""}
               onChangeText={handleSearchChange}
@@ -414,7 +375,7 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
                 textAlign: "center",
               }}
             >
-              {t("products.empty")}
+              Không có sản phẩm nào
             </ThemedText>
           )}
           {products.map((product) => (
@@ -448,29 +409,29 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
             ]}
           >
             <ThemedText type="defaultSemiBold" style={styles.sectionLabel}>
-              {t("products.category")}
+              Category
             </ThemedText>
             <ThemedView style={styles.chipGroup}>
               {renderChip<number>(
-                categoryOptions,
-                draftFilters.categoriesid,
-                handleCategoriesIdPress,
+                CATEGORY_OPTIONS,
+                draftFilters.category,
+                handleCategoryPress,
               )}
             </ThemedView>
 
             <ThemedText type="defaultSemiBold" style={styles.sectionLabel}>
-              {t("products.brand")}
+              Brand
             </ThemedText>
             <ThemedView style={styles.chipGroup}>
               {renderChip<string>(
-                brandOptions,
+                BRAND_OPTIONS,
                 draftFilters.brand,
                 handleBrandPress,
               )}
             </ThemedView>
 
             <ThemedText type="defaultSemiBold" style={styles.sectionLabel}>
-              {t("products.priceRange")} (VND)
+              Price Range (VND)
             </ThemedText>
             <ThemedView style={styles.priceSection}>
               <ThemedView style={styles.rangeLabels}>
@@ -488,11 +449,11 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <ThemedText>{t("products.minPrice")}</ThemedText>
+                <ThemedText>Min Price</ThemedText>
                 <Slider
                   style={styles.slider}
-                  minimumValue={computedRange.min}
-                  maximumValue={computedRange.max}
+                  minimumValue={PRICE_RANGE.min}
+                  maximumValue={PRICE_RANGE.max}
                   value={priceInputs.min}
                   step={PRICE_STEP}
                   minimumTrackTintColor={palette.tint}
@@ -508,11 +469,11 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <ThemedText>{t("products.maxPrice")}</ThemedText>
+                <ThemedText>Max Price</ThemedText>
                 <Slider
                   style={styles.slider}
-                  minimumValue={computedRange.min}
-                  maximumValue={computedRange.max}
+                  minimumValue={PRICE_RANGE.min}
+                  maximumValue={PRICE_RANGE.max}
                   value={priceInputs.max}
                   step={PRICE_STEP}
                   minimumTrackTintColor={palette.border}
@@ -522,11 +483,8 @@ const ProductsScreen: React.FC<ProductsScreenProps> = ({ filters }) => {
                 />
               </ThemedView>
             </ThemedView>
-            <FullButton text={t("common.apply")} onPress={handleApplyFilters} />
-            <BorderButton
-              text={t("common.clear")}
-              onPress={handleClearFilters}
-            />
+            <FullButton text="Apply" onPress={handleApplyFilters} />
+            <BorderButton text="Clear" onPress={handleClearFilters} />
           </ThemedView>
         </KeyboardAvoidingView>
       </Modal>

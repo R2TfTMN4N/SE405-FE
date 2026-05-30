@@ -14,7 +14,7 @@ const getDeviceLanguage = async (): Promise<string> => {
     if (savedLanguage) {
       return savedLanguage;
     }
-    // Default to English
+    // Default to English if no saved language or device language is detected
     return "en";
   } catch (error) {
     return "en";
