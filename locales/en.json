@@ -19,7 +19,33 @@
     "finish": "Finish",
     "loading": "Loading...",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "skipForNow": "Skip for now",
+    "getStarted": "Get Started",
+    "seeAll": "See All",
+    "retry": "Retry",
+    "signupWithGoogle": "Sign Up with Google",
+    "fullName": "Fullname",
+    "apply": "Apply",
+    "clear": "Clear",
+    "phoneNumber": "Phone Number",
+    "phoneNumberPlaceholder": "Enter your phone number",
+    "ok": "OK"
+  },
+  "layout": {
+    "home": "Home",
+    "categories": "Categories",
+    "cart": "Cart",
+    "profile": "Profile",
+    "wishlist": "Wishlist"
+  },
+  "onboarding": {
+    "exploreProducts": "Explore a wide range of products",
+    "description": "Explore a wide range of products at your fingertips. ShopEase offers an extensive collection to suit your needs.",
+    "unlockOffers": "Unlock exclusive offers and discounts",
+    "offersDescription": "Get access to limited-time deals and special promotions available only to our valued customers.",
+    "safeAndSecurePayments": "Safe and secure payments",
+    "paymentsDescription": "ShopEase employs industry-leading encryption and trusted payment gateways to safeguard your financial information."
   },
   "login": {
     "title": "Login",
@@ -34,47 +60,135 @@
     "and": "and",
     "privacyPolicy": "Privacy Policy"
   },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "confirmEmail": "Confirmation Email",
+    "confirmDescription": "Enter your email address for verification.",
+    "enterEmail": "Enter your email",
+    "send": "Send",
+    "emailVerification": "Email Verification",
+    "verificationDescription": "Enter the 6-digit code sent to your email address.",
+    "resendCode": "Resend Code",
+    "verify": "Verify",
+    "codeRequired": "Please enter the complete verification code.",
+    "invalidCode": "The verification code is invalid. Please try again.",
+    "invalidPassword": "The password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.",
+    "matchError": "The passwords do not match. Please try again.",
+    "create": "Create New Password",
+    "newPassword": "New Password",
+    "newPasswordDescription": "Enter your new password and remember it.",
+    "newPasswordPlaceholder": "Enter your new password",
+    "confirmNewPassword": "Confirm Password",
+    "confirmNewPasswordPlaceholder": "Confirm your new password",
+    "successTitle": "Password Reset Successful",
+    "passwordResetSuccess": "Congratulations! Your password has been set successfully. Please proceed to the login screen to verify your account.",
+    "emailSentSuccess": "A temporary password has been sent to your email address. Please check your inbox and use it to log in.",
+    "errorSendingEmail": "There was an error sending the email. Please try again later."
+  },
   "signup": {
     "title": "Sign Up",
     "alreadyHaveAccount": "Already have an account?",
-    "createAccount": "Create Account"
+    "createAccount": "Create Account",
+    "fullNamePlaceholder": "Enter your fullname",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "fillAllFields": "Please fill in all fields.",
+    "invalidEmail": "Please enter a valid email address.",
+    "signupSuccess": "Sign up successful! Please log in.",
+    "signupFailed": "Sign up failed. Please try again.",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "invalidPassword": "Password must be 6-20 characters long, contain no spaces, and include at least one uppercase letter, one lowercase letter, and one number."
   },
   "home": {
     "welcome": "Welcome",
-    "categories": "Categories",
-    "featured": "Featured Products",
-    "newArrivals": "New Arrivals"
+    "category": "Category",
+    "bestSelling": "Best Selling",
+    "latestProducts": "Latest Products",
+    "flashsale": "Flash Sale",
+    "flashsaleEnded": "Ended"
   },
   "profile": {
     "title": "Profile",
     "editProfile": "Edit Profile",
+    "personalInformation": "Personal Information",
+    "shippingAddress": "Shipping Address",
     "changePassword": "Change Password",
+    "darkTheme": "Dark Theme",
+    "supportInformation": "Support & Information",
+    "privacyPolicy": "Privacy Policy",
+    "termsAndConditions": "Terms & Conditions",
+    "faqs": "FAQs",
+    "chatbot": "Chatbot",
     "orderHistory": "Order History",
     "settings": "Settings",
     "language": "Language",
     "theme": "Theme",
-    "logout": "Logout"
+    "logout": "Logout",
+    "logoutConfirmation": "Are you sure you want to log out?",
+    "ChangePassSuccessTitle": "Success",
+    "ChangePassSuccessMessage": "Your password has been changed successfully.",
+    "ChangePassErrorTitle": "Error",
+    "errorChangingPassword": "There was an error changing your password. Please try again later."
   },
   "cart": {
-    "title": "Cart",
+    "title": "My Cart",
     "empty": "Your cart is empty",
+    "explore": "Explore Products",
+    "orderInfo": "Order Info",
+    "subtotal": "Subtotal",
+    "shippingCost": "Shipping Cost",
+    "discount": "Discount",
+    "voucherCode": "Voucher Code",
     "total": "Total",
     "checkout": "Checkout",
-    "removeItem": "Remove item"
+    "enterVoucherCode": "Enter Voucher Code",
+    "apply": "Apply",
+    "availablePromotions": "Available Promotions",
+    "noPromotions": "No promotions available right now.",
+    "select": "Select",
+    "selected": "Selected",
+    "minSpend": "Min spend",
+    "promotionApplied": "Promotion applied.",
+    "promotionInvalid": "This promotion cannot be applied right now.",
+    "appliedPromotion": "Applied promotion",
+    "selectItemsFirst": "Please select at least one item to checkout.",
+    "delete": "Delete Product from Cart",
+    "deleteProductFromCart": "Are you sure that you want to delete this product from your cart?",
+    "checkouttitle": "Item",
+    "shortdelete": "Delete",
+    "pleaseLogin": "Please log in to view your cart.",
+    "deleteSuccess": "Product removed from cart successfully.",
+    "deleteFailed": "Failed to remove product from cart. Please try again."
+  },
+  "wishlist": {
+    "title": "My Wishlist",
+    "empty": "Your wishlist is empty",
+    "emptyDescription": "Tap heart button to start saving your favorite items.",
+    "explore": "Explore Products",
+    "addToCart": "Add to Cart",
+    "delete": "Delete Product from Wishlist",
+    "deleteProductFromWishlist": "Are you sure that you want to delete this product from your wishlist?"
   },
   "categories": {
-    "rackets": "Rackets",
-    "shoes": "Shoes",
-    "clothes": "Clothes",
-    "shuttlecocks": "Shuttlecocks",
-    "bags": "Bags",
+    "title": "Categories",
+    "rackets": "Electronics",
+    "shoes": "Footwear",
+    "clothes": "Apparel",
+    "shuttlecocks": "Home & Living",
+    "bags": "Accessories",
     "other": "Other"
   },
   "chat": {
     "title": "Chat",
+    "error": "Error",
     "typeMessage": "Type your message...",
     "startConversation": "Start a conversation to chat with sellers",
-    "chatWithSeller": "Chat with Seller"
+    "chatWithSeller": "Chat with Seller",
+    "botMode": "Chat with Bot",
+    "sellerMode": "Chat with Seller",
+    "welcomeMessage": "Hello! How can I assist you today?",
+    "processing": "Processing..."
   },
   "faqs": {
     "title": "FAQs",
@@ -91,5 +205,332 @@
     "more": "For any query, you can visit our website for",
     "help": "Help Center",
     "at": "at ShopEase.com"
+  },
+  "feedback": {
+    "title": "Feedback",
+    "yourRating": "Your Rating:",
+    "yourComment": "Your Comment:",
+    "commentDescription": "Share your thoughts...",
+    "submit": "Submit",
+    "thankYou": "Thank you for your feedback!",
+    "alertTitleMissingRating": "Missing Information",
+    "pleaseSelectRating": "Please select a rating.",
+    "products": "Products",
+    "errorSubmitting": "Error submitting feedback. Please try again.",
+    "alertTitleError": "Submission Error"
+  },
+  "orders": {
+    "title": "Order History",
+    "ongoing": "Ongoing",
+    "completed": "Completed",
+    "noOngoing": "No ongoing orders",
+    "onDescription": " We currently don't have any active orders in progress. Feel free to explore our products and place a new order.",
+    "explore": "Explore Products",
+    "noCompleted": "No completed orders.",
+    "compDescription": "We don't have any past orders that have been completed. Start shopping now and create your first order with us.",
+    "buyAgain": "Buy Again",
+    "rate": "Rate",
+    "cancel": "Cancel",
+    "products": "products",
+    "total": "Total",
+    "cancelOrderTitle": "Cancel Order",
+    "cancelOrderMessage": "Are you sure you want to cancel this order?",
+    "confirmCancel": "Yes, Cancel Order",
+    "status": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    }
+  },
+  "product": {
+    "reviews": "reviews",
+    "review": "review",
+    "readMore": "Read more",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "brand": "Brand",
+    "quantity": "Quantity",
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "productId": "Product ID",
+    "topRated": "Top Rated",
+    "freeShipping": "Free Shipping",
+    "relatedProducts": "Related Products",
+    "Reviews": "Reviews",
+    "addToCartSuccess": "Product added to cart successfully!"
+  },
+  "order": {
+    "orderDetail": "Order Detail",
+    "item": "Item",
+    "shippingAddress": "Shipping Address",
+    "fullName": "Full Name",
+    "phoneNumber": "Phone Number",
+    "country": "Country",
+    "city": "City",
+    "district": "District",
+    "streetAddress": "Street Address",
+    "orderInformation": "Order Information",
+    "subtotal": "Subtotal",
+    "shippingCost": "Shipping Cost",
+    "discount": "Discount",
+    "total": "Total",
+    "buyAgain": "Buy Again",
+    "rate": "Rate",
+    "paymentMethod": "Payment Method",
+    "payment": "Payment",
+    "cash": "Cash on Delivery",
+    "cancel": "Cancel",
+    "orderId": "Order ID",
+    "warnCancel": "Are you sure you want to cancel this order?",
+    "successCancel": "Order cancelled successfully!",
+    "errorCancel": "Failed to cancel order. Please try again.",
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "pay": "Pay Now"
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "currentPassword": "Current Password",
+    "currentPasswordDescription": "Enter your current password to change the password.",
+    "enterCurrentPassword": "Enter your current password",
+    "invalidCurrentPassword": "The current password is incorrect. Please try again.",
+    "fillAll": "Please fill in all fields."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "intro": "At ShopEase, we are committed to protecting the privacy and security of our users' personal information. This Privacy Policy outlines how we collect, use, disclose, and safeguard the information obtained through our e-commerce app. By using ShopEase, you consent to the practices described in this policy.",
+    "section1": {
+      "title": "1. Information Collection:",
+      "item1": " - Personal Information: We may collect personal information such as name, address, email, and phone number when you create an account, make a purchase, or interact with our services.",
+      "item2": " - Transaction Details: We collect information related to your purchases, including order history, payment method, and shipping details.",
+      "item3": " - Usage Data: We may collect data on how you interact with our app, such as browsing activity, search queries, and preferences."
+    },
+    "section2": {
+      "title": "2. Information Use:",
+      "item1": " - Provide Services: We use the collected information to process orders, deliver products, and provide customer support.",
+      "item2": " - Personalization: We may use your information to personalize your shopping experience, recommend products, and display targeted advertisements.",
+      "item3": " - Communication: We may use your contact information to send important updates, promotional offers, and newsletters. You can opt-out of these communications at any time."
+    },
+    "section3": {
+      "title": "3. Information Sharing:",
+      "item1": " - Third-Party Service Providers: We may share your information with trusted third-party service providers who assist us in operating our app, fulfilling orders, and improving our services.",
+      "item2": " - Legal Compliance: We may disclose personal information if required by law or in response to a valid legal request from authorities."
+    },
+    "section4": {
+      "title": "4. Data Security:",
+      "item1": " - We implement appropriate security measures to protect your information from unauthorized access, alteration, disclosure, or destruction.",
+      "item2": " - However, please note that no data transmission over the internet or electronic storage is 100% secure. We cannot guarantee absolute security of your information."
+    },
+    "section5": {
+      "title": "5. User Rights:",
+      "item1": " - Access and Update: You have the right to access, correct, or update your personal information stored in our app.",
+      "item2": " - Data Retention: We retain your personal information as long as necessary to provide our services and comply with legal obligations."
+    },
+    "section6": {
+      "title": "6. Children's Privacy:",
+      "item1": " - ShopEase is not intended for children under the age of 13. We do not knowingly collect or solicit personal information from children."
+    },
+    "section7": {
+      "title": "7. Updates to the Privacy Policy:",
+      "item1": " - We reserve the right to update this Privacy Policy from time to time. Any changes will be posted on our app, and the revised policy will be effective upon posting."
+    },
+    "outro": "If you have any questions or concerns about our Privacy Policy, please contact our customer support. By using ShopEase, you acknowledge that you have read and understood this Privacy Policy and agree to its terms and conditions."
+  },
+  "products": {
+    "all": "All",
+    "search": "Search",
+    "empty": "No products found",
+    "category": "Category",
+    "brand": "Brand",
+    "priceRange": "Price Range (VND)",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price"
+  },
+  "search": {
+    "all": "All",
+    "search": "Search...",
+    "category": "Category",
+    "brand": "Brand",
+    "priceRange": "Price Range (VND)",
+    "min": "Min",
+    "max": "Max",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "apply": "Apply"
+  },
+  "shippingAddress": {
+    "title": "Shipping Address",
+    "fields": {
+      "fullName": "Full Name",
+      "phone": "Phone Number",
+      "country": "Country",
+      "province": "Province / City",
+      "district": "District",
+      "detailedAddress": "Detailed Address"
+    },
+    "placeholders": {
+      "fullName": "Enter your full name",
+      "phone": "Enter your phone number",
+      "country": "Select country",
+      "selectCountryFirst": "Select a country first",
+      "selectProvince": "Select province / city",
+      "selectProvinceFirst": "Select province first",
+      "selectDistrict": "Select district",
+      "loadingProvinces": "Loading provinces...",
+      "loadingDistricts": "Loading districts...",
+      "detailedAddress": "Street, building, house number"
+    },
+    "dropdown": {
+      "selectOption": "Select an option",
+      "noOptions": "No options available",
+      "noCountries": "No countries available",
+      "noProvinces": "No provinces available",
+      "noDistricts": "No districts available"
+    },
+    "validation": {
+      "fullNameRequired": "Full name is required.",
+      "phoneRequired": "Phone number is required.",
+      "detailedAddressRequired": "Detailed address is required.",
+      "provinceDistrictRequired": "Please select province and district."
+    },
+    "errors": {
+      "loadAddress": "Unable to load address data. Check your connection and try again."
+    },
+    "updateSuccessTitle": "Success",
+    "updateSuccessMessage": "Your shipping address has been updated successfully.",
+    "updateErrorTitle": "Error",
+    "updateErrorMessage": "There was an error updating your shipping address. Please try again later."
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "intro": "Welcome to ShopEase! These Terms and Conditions (\"Terms\") govern your use of our e-commerce app. By accessing or using ShopEase, you agree to be bound by these Terms. Please read them carefully before proceeding.",
+    "section1": {
+      "title": "1. Account Registration:",
+      "bullet1": " - You must create an account to use certain features of ShopEase.",
+      "bullet2": " - You are responsible for providing accurate and up-to-date information during the registration process.",
+      "bullet3": " - You must safeguard your account credentials and notify us immediately of any unauthorized access or use of your account."
+    },
+    "section2": {
+      "title": "2. Product Information and Pricing:",
+      "bullet1": " - ShopEase strives to provide accurate product descriptions, images, and pricing information.",
+      "bullet2": " - We reserve the right to modify product details and prices without prior notice.",
+      "bullet3": " - In the event of an error, we may cancel or refuse orders placed for incorrectly priced products."
+    },
+    "section3": {
+      "title": "3. Order Placement and Fulfillment:",
+      "bullet1": " - By placing an order on ShopEase, you agree to purchase the selected products at the stated price.",
+      "bullet2": " - We reserve the right to accept or reject any order, and we may cancel orders due to product unavailability, pricing errors, or suspected fraudulent activity.",
+      "bullet3": " - Once an order is confirmed, we will make reasonable efforts to fulfill and deliver it in a timely manner."
+    },
+    "section4": {
+      "title": "4. Payment:",
+      "bullet1": " - ShopEase supports various payment methods, including credit/debit cards and online payment platforms.",
+      "bullet2": " - By providing payment information, you represent and warrant that you are authorized to use the chosen payment method.",
+      "bullet3": " - All payments are subject to verification and approval by relevant financial institutions."
+    },
+    "section5": {
+      "title": "5. Shipping and Delivery:",
+      "bullet1": " - ShopEase will make reasonable efforts to ensure timely delivery of products.",
+      "bullet2": " - Shipping times may vary based on factors beyond our control, such as location, weather conditions, or carrier delays.",
+      "bullet3": " - Risk of loss or damage to products passes to you upon delivery."
+    },
+    "section6": {
+      "title": "6. Returns and Refunds:",
+      "bullet1": " - ShopEase's return and refund policies are outlined separately and govern the process for returning products and seeking refunds.",
+      "bullet2": " - Certain products may be non-returnable or subject to specific conditions."
+    },
+    "section7": {
+      "title": "7. Intellectual Property:",
+      "bullet1": " - ShopEase and its content, including logos, trademarks, text, images, and software, are protected by intellectual property rights.",
+      "bullet2": " - You may not use, reproduce, modify, distribute, or display any part of ShopEase without our prior written consent."
+    },
+    "section8": {
+      "title": "8. User Conduct:",
+      "bullet1": " - You agree to use ShopEase in compliance with applicable laws and regulations.",
+      "bullet2": " - You will not engage in any activity that disrupts or interferes with the functioning of ShopEase or infringes upon the rights of others.",
+      "bullet3": " - Any unauthorized use or attempt to access restricted areas or user accounts is strictly prohibited."
+    },
+    "section9": {
+      "title": "9. Limitation of Liability:",
+      "bullet1": " - ShopEase and its affiliates shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from the use or inability to use our app or any products purchased through it.",
+      "bullet2": " - We do not guarantee the accuracy, completeness, or reliability of information provided on ShopEase."
+    },
+    "section10": {
+      "title": "10. Governing Law:",
+      "bullet1": " - These Terms shall be governed by and construed in accordance with the laws of [Jurisdiction].",
+      "bullet2": " - Any disputes arising out of or relating to these Terms shall be resolved in the courts of [Jurisdiction]."
+    },
+    "footer": "If you have any questions or concerns regarding these Terms and Conditions, please contact our customer support. By using ShopEase, you acknowledge that you have read, understood, and agreed to these Terms and Conditions."
+  },
+  "checkout": {
+    "title": "Checkout",
+    "fields": {
+      "fullName": "Full Name",
+      "phone": "Phone Number",
+      "country": "Country",
+      "province": "Province / City",
+      "district": "District",
+      "detailedAddress": "Detailed Address"
+    },
+    "placeholders": {
+      "fullName": "Enter your full name",
+      "phone": "Enter your phone number",
+      "country": "Select country",
+      "selectCountryFirst": "Select a country first",
+      "selectProvince": "Select province / city",
+      "selectProvinceFirst": "Select province first",
+      "selectDistrict": "Select district",
+      "loadingProvinces": "Loading provinces...",
+      "loadingDistricts": "Loading districts...",
+      "detailedAddress": "Street, building, house number"
+    },
+    "dropdown": {
+      "selectOption": "Select an option",
+      "noOptions": "No options available",
+      "noCountries": "No countries available",
+      "noProvinces": "No provinces available",
+      "noDistricts": "No districts available"
+    },
+    "errors": {
+      "loadAddress": "Unable to load addresses. Check your connection and try again.",
+      "fillAllFields": "Please fill in all required fields."
+    }
+  },
+  "checkoutResult": {
+    "title": "Your order has been placed successfully",
+    "subtitle": "Thank you for choosing us! Feel free to continue shopping and explore our wide range of products. Happy Shopping!",
+    "continueShopping": "Continue Shopping"
+  },
+  "checkoutPayment": {
+    "title": "Checkout",
+    "selectPaymentMethod": "Please select a payment method",
+    "cash": "Cash",
+    "paymentSuccess": "Payment successful!"
+  },
+  "checkoutReview": {
+    "title": "Checkout",
+    "item": "Item",
+    "payment": "Payment",
+    "shippingAddressTitle": "Shipping Address",
+    "orderInformationTitle": "Order Information",
+    "placeOrderSuccess": "Your order has been placed successfully!",
+    "fields": {
+      "fullName": "Full Name",
+      "phoneNumber": "Phone Number",
+      "country": "Country",
+      "city": "City",
+      "district": "District",
+      "streetAddress": "Street Address"
+    },
+    "summary": {
+      "subtotal": "Subtotal",
+      "shippingCost": "Shipping Cost",
+      "discount": "Discount",
+      "discountValue": "{{value}} %",
+      "total": "Total"
+    },
+    "placeOrder": "Place Order"
   }
 }
