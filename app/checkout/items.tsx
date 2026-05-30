@@ -6,7 +6,9 @@ import FullButton from "@/components/ui/FullButton";
 import GoBackButton from "@/components/ui/GoBackButton";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import React, { FC } from "react";
+import { useLocalSearchParams } from "expo-router";
+import React, { FC, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   KeyboardAvoidingView,
   Modal,
@@ -17,6 +19,8 @@ import {
 } from "react-native";
 
 const CheckoutScreen: FC = () => {
+  const { t } = useTranslation();
+  const params = useLocalSearchParams();
   const schemeRaw = useColorScheme();
   const scheme: keyof typeof Colors = (schemeRaw ??
     "light") as keyof typeof Colors;
@@ -24,10 +28,18 @@ const CheckoutScreen: FC = () => {
   const [selectedToRemove, setSelectedToRemove] = React.useState<string | null>(
     null,
   );
+  const [item, setItem] = React.useState<any[]>([]);
+
+  useEffect(() => {
+    if (params.items) {
+      const parsedItems = JSON.parse(params.items as string);
+      setItem(parsedItems);
+    }
+  }, [params.items]);
   const handleChangeQuantity = (id: string, quantity: number) => {
     const updatedItems = item.map((ci) => {
-      if (ci.product.id === id) {
-        return { ...ci, numberOfItems: quantity };
+      if (ci.productId === id) {
+        return { ...ci, quantity: quantity };
       }
       return ci;
     });
@@ -38,7 +50,7 @@ const CheckoutScreen: FC = () => {
     setIsDeleteModalVisible(false);
   };
   const onDeleteRequest = (id: string) => {
-    const filteredItems = item.filter((ci) => ci.product.id !== id);
+    const filteredItems = item.filter((ci) => ci.productId !== id);
     setItem(filteredItems);
   };
 
@@ -50,45 +62,9 @@ const CheckoutScreen: FC = () => {
   };
 
   const handleRemove = (id: string) => {
-    const updatedItems = item.filter((ci) => ci.product.id !== id);
+    const updatedItems = item.filter((ci) => ci.productId !== id);
     setItem(updatedItems);
   };
-
-  const [item, setItem] = React.useState([
-    {
-      id: "1",
-      product: {
-        id: "1",
-        name: "Wireless Earbuds A1",
-        price: 1290000,
-        image: require("@/assets/images/product1.png"),
-        discount: 15,
-      },
-      numberOfItems: 1,
-    },
-    {
-      id: "2",
-      product: {
-        id: "2",
-        name: "City Backpack 20L",
-        price: 780000,
-        image: require("@/assets/images/product1.png"),
-        discount: 12,
-      },
-      numberOfItems: 2,
-    },
-    {
-      id: "3",
-      product: {
-        id: "3",
-        name: "Running Sneakers Flex",
-        price: 1900000,
-        image: require("@/assets/images/product1.png"),
-        discount: 10,
-      },
-      numberOfItems: 1,
-    },
-  ]);
 
   return (
     <ThemedView style={styles.container}>
@@ -96,7 +72,7 @@ const CheckoutScreen: FC = () => {
         <ThemedView style={styles.leftHeader}>
           <GoBackButton />
           <ThemedText type="title" style={{ fontSize: 20 }}>
-            Item
+            {t("cart.checkouttitle")}
           </ThemedText>
         </ThemedView>
       </ThemedView>
@@ -105,8 +81,8 @@ const CheckoutScreen: FC = () => {
           <CartItem
             key={i.id}
             type="review"
-            product={i.product}
-            numberOfItems={i.numberOfItems}
+            product={i}
+            numberOfItems={i.quantity}
             onChangeQuantity={handleChangeQuantity}
             onDeleteRequest={onDeleteRequest}
           />
@@ -138,12 +114,12 @@ const CheckoutScreen: FC = () => {
               { backgroundColor: Colors[scheme].modalBackground },
             ]}
           >
-            <ThemedText style={styles.modalTitle}>Delete</ThemedText>
-            <ThemedText style={{ marginTop: 8 }}>
-              Delete product from cart
+            <ThemedText style={styles.modalTitle}>
+              {t("cart.shortdelete")}
             </ThemedText>
-            <FullButton onPress={confirmDelete} text="Delete" />
-            <BorderButton onPress={cancelDelete} text="Cancel" />
+            <ThemedText style={{ marginTop: 8 }}>{t("cart.delete")}</ThemedText>
+            <FullButton onPress={confirmDelete} text={t("cart.shortdelete")} />
+            <BorderButton onPress={cancelDelete} text={t("common.cancel")} />
           </ThemedView>
         </KeyboardAvoidingView>
       </Modal>
