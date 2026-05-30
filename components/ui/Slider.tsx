@@ -1,5 +1,4 @@
-
-import Slider from '@react-native-community/slider';
+import Slider from "@react-native-community/slider";
 
 export type SliderProps = React.ComponentProps<typeof Slider>;
 
