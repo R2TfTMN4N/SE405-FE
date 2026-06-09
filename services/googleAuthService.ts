@@ -7,7 +7,9 @@ export type GoogleUserInfo = {
   picture?: string;
 };
 
-export async function googleLoginOnBackend(userInfo: GoogleUserInfo): Promise<string> {
+export async function googleLoginOnBackend(
+  userInfo: GoogleUserInfo,
+): Promise<string> {
   const response = await http.post<{ token: string }>("/users/google-login", {
     email: userInfo.email,
     name: userInfo.name,
@@ -40,7 +42,7 @@ export function useGoogleAuth() {
       responseType: AuthSession.ResponseType.Token,
       usePKCE: false,
     },
-    discovery
+    discovery,
   );
   return { request, response, promptAsync };
 }
