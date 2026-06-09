@@ -7,7 +7,9 @@ import PasswordInput from "@/components/ui/PasswordInput";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { login } from "@/services/authenticationService";
+import { googleLoginOnBackend } from "@/services/googleAuthService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -38,6 +40,26 @@ const LoginScreen: React.FC = () => {
   const [isPasswordFocused, setIsPasswordFocused] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        setIsLoading(true);
+        const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+        });
+        const userInfo = await res.json() as { sub: string; email: string; name: string };
+        const token = await googleLoginOnBackend({ id: userInfo.sub, email: userInfo.email, name: userInfo.name });
+        await signIn(token);
+      } catch {
+        setError(t("login.loginFailed"));
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    onError: () => setError(t("login.loginFailed")),
+  });
+
   const handleLogin = async (email: string, password: string) => {
     setError(null);
     if (!email.trim() || !password.trim()) {
@@ -164,7 +186,7 @@ const LoginScreen: React.FC = () => {
             />
             <BorderButton
               text={t("common.loginWithGoogle")}
-              onPress={() => {}}
+              onPress={() => { if (!isLoading) handleGoogleLogin(); }}
               style={{ marginTop: 12 }}
               icon={
                 <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">

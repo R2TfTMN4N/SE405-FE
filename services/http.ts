@@ -1,4 +1,5 @@
 // HTTP helper for API requests with timeout and JSON parsing
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "./runtime-config";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -42,15 +43,19 @@ function buildUrl(url: string): string {
     );
   }
   const path = url.replace(/^\//, "");
-  return `${base}/${path}`.replace(/\/+/, "/");
+  const combined = `${base}/${path}`;
+  // Replace multiple slashes but preserve ://
+  return combined.replace(/([^:])\/\/+/g, "$1/");
 }
 
-function buildHeaders(
+async function buildHeaders(
   headers?: Record<string, string>,
-): Record<string, string> {
+): Promise<Record<string, string>> {
+  const token = await AsyncStorage.getItem("loginToken");
   return {
     Accept: "application/json",
     "Content-Type": "application/json",
+    ...(token && { token }),
     ...headers,
   };
 }
@@ -67,7 +72,7 @@ export async function request<T = any>(
   }
   const init: RequestInit = {
     method,
-    headers: buildHeaders(headers),
+    headers: await buildHeaders(headers),
   } as RequestInit;
 
   if (body !== undefined && body !== null) {

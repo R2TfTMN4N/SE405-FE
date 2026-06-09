@@ -57,7 +57,7 @@ const FeedbackScreen: FC = () => {
     const submitFeedback = async () => {
       const token = await AsyncStorage.getItem("loginToken");
       const decode = jwtDecode<any>(token || "");
-      const userid = decode.id ?? decode.userid;
+      const userid = decode.userid;
       products.map(async (product: any) => {
         const res = await submitReview({
           userid,
@@ -278,5 +278,4 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     textAlignVertical: "top",
   },
-  s,
 });

@@ -56,8 +56,16 @@ export default function WelcomeScreen(): ReactElement {
           } catch (e) {
             console.warn("Failed to save welcome flag", e);
           }
-          // router.replace expects a string path; cast to any only if necessary for router types
-          (router as any).replace("/onboarding");
+          try {
+            const token = await AsyncStorage.getItem("loginToken");
+            if (token) {
+              (router as any).replace("/(tabs)");
+            } else {
+              (router as any).replace("/login");
+            }
+          } catch {
+            (router as any).replace("/login");
+          }
         })();
       }
     }, tick);

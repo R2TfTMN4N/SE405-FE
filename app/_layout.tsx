@@ -5,6 +5,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useRef, useState } from "react";
@@ -16,6 +17,8 @@ import { ThemePreferenceProvider } from "@/app/providers/ThemePreferenceProvider
 import { ToastProvider } from "@/app/providers/ToastProvider";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import WelcomeScreen from "./welcome";
+
+const GOOGLE_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID || "";
 
 export const unstable_settings = {
   anchor: "welcome",
@@ -64,6 +67,7 @@ export default function RootLayout() {
   }, [segments, router]);
 
   return (
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
     <ThemePreferenceProvider>
       <ToastProvider>
         <AuthProvider>
@@ -206,5 +210,6 @@ export default function RootLayout() {
         </AuthProvider>
       </ToastProvider>
     </ThemePreferenceProvider>
+    </GoogleOAuthProvider>
   );
 }

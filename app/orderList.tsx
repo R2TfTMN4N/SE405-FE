@@ -30,7 +30,7 @@ const OrderListScreen: FC = () => {
     try {
       const token = await AsyncStorage.getItem("loginToken");
       const decode = jwtDecode<any>(token || "");
-      const userId = decode.id ?? decode.userid;
+      const userId = decode.userid;
       const orders = await getOrderByUserId(userId);
       console.log("Fetched Orders:", orders);
       const ordersWithDetails = await Promise.all(

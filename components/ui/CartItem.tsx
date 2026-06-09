@@ -64,7 +64,7 @@ const CartItem: FC<CartItemProps> = ({
     const token = await AsyncStorage.getItem("loginToken");
     const decode = jwtDecode<any>(token ?? "");
     await updateCart(product?.id, {
-      userid: decode.userid ?? decode.id,
+      userid: decode.userid,
       productid: product?.productid,
       quantity: newQuantity,
       notes: "",

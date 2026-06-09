@@ -60,7 +60,7 @@ const Header: FC<HeaderProps> = ({ mode }: HeaderProps): React.ReactElement => {
       <ThemedView style={styles.logoContainer}>
         <Image source={logoSource} style={styles.logo} />
         <ThemedText type="title" style={[styles.title, { color: iconColor }]}>
-          BadmintonGear
+          ShopEase
         </ThemedText>
       </ThemedView>
 

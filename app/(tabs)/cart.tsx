@@ -63,10 +63,28 @@ const CartScreen: FC = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [promotions, setPromotions] = useState<Promotion[]>([]);
 
-  const loadPromotions = async () => {
+  const getDecodedLoginToken = async () => {
     const token = await AsyncStorage.getItem("loginToken");
-    const decode = jwtDecode(token ?? "") as any;
+    if (!token) {
+      return null;
+    }
+
+    try {
+      return jwtDecode<any>(token);
+    } catch (error) {
+      console.warn("Invalid login token while decoding cart state:", error);
+      return null;
+    }
+  };
+
+  const loadPromotions = async () => {
+    const decode = await getDecodedLoginToken();
     const userid = decode?.userid;
+
+    if (!userid) {
+      return [];
+    }
+
     const res = await getSuggestPromotions({ orderTotal: total, userid });
     return res.map(
       (promo: any) =>
@@ -184,8 +202,7 @@ const CartScreen: FC = () => {
       const load = async () => {
         try {
           let userId: string | number | undefined;
-          const userData = await AsyncStorage.getItem("loginToken");
-          const decode = jwtDecode<any>(userData ?? "");
+          const decode = await getDecodedLoginToken();
           userId = decode?.id ?? decode?.userid;
 
           if (!userId) {
