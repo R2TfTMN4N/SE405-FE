@@ -48,6 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = async () => {
     await AsyncStorage.removeItem("loginToken");
     setIsAuthenticated(false);
+    router.replace("/login");
   };
 
   useEffect(() => {

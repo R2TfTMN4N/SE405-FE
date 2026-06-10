@@ -56,18 +56,26 @@ const ProfileScreen: React.FC = () => {
   }, []);
 
   const handleLogout = async () => {
-    Alert.alert(t("profile.logout"), t("profile.logoutConfirmation"), [
-      { text: t("common.cancel"), onPress: () => {}, style: "cancel" },
-      {
-        text: t("profile.logout"),
-        onPress: async () => {
-          await AsyncStorage.removeItem("password");
-          await signOut();
-          // AuthProvider will handle navigation automatically
-        },
-        style: "destructive",
-      },
-    ]);
+    const doLogout = async () => {
+      await AsyncStorage.removeItem("password");
+      await signOut();
+    };
+
+    if (
+      typeof window !== "undefined" &&
+      typeof (window as any).confirm === "function"
+    ) {
+      // Web: dùng window.confirm thay vì Alert.alert (Alert không hoạt động trên web)
+      const confirmed = (window as any).confirm(
+        t("profile.logoutConfirmation"),
+      );
+      if (confirmed) await doLogout();
+    } else {
+      Alert.alert(t("profile.logout"), t("profile.logoutConfirmation"), [
+        { text: t("common.cancel"), onPress: () => {}, style: "cancel" },
+        { text: t("profile.logout"), onPress: doLogout, style: "destructive" },
+      ]);
+    }
   };
 
   return (
