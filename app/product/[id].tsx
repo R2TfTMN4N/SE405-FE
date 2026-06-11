@@ -646,7 +646,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 36,
     borderTopRightRadius: 36,
     marginTop: -20,
-    padding: 15,
+    padding: 24,
     paddingBottom: 100,
   },
   tagsContainer: {

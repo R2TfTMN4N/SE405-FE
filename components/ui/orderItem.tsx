@@ -169,7 +169,12 @@ export default function OrderItem({
         router.push(`/order/${order.id}` as any);
       }}
     >
-      <ThemedView style={[styles.container, { borderColor: borderColor }]}>
+      <ThemedView
+        style={[
+          styles.container,
+          { borderColor: borderColor, backgroundColor: Colors[scheme].backgroundSecondary },
+        ]}
+      > 
         <ThemedView style={styles.statusContainer}>
           <ThemedText
             type="default"
@@ -200,7 +205,7 @@ export default function OrderItem({
             {updatedDate.toLocaleDateString("vi-VN")}
           </ThemedText>
         </ThemedView>
-        <ThemedView style={styles.item}>
+        <ThemedView style={[styles.item, { padding: 12 }] }>
           <Image
             source={
               firstItem?.Product?.ImagesProducts?.[0]?.url ||

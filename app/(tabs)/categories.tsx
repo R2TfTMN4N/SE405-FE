@@ -1,7 +1,11 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import AccessoriesIcon from "@/components/ui/categoryIcon/AccessoriesIcon";
+import ApparelIcon from "@/components/ui/categoryIcon/ApprealIcon";
 import BagsIcon from "@/components/ui/categoryIcon/BagsIcon";
 import ClothesIcon from "@/components/ui/categoryIcon/ClothesIcon";
+import ElectronicsIcon from "@/components/ui/categoryIcon/ElectronicsIcon";
+import HomeLivingIcon from "@/components/ui/categoryIcon/HomeAndLivingIcon";
 import OtherIcon from "@/components/ui/categoryIcon/OtherIcon";
 import RacketIcon from "@/components/ui/categoryIcon/RacketIcon";
 import ShoesIcon from "@/components/ui/categoryIcon/ShoesIcon";
@@ -32,27 +36,27 @@ export default function CategoriesScreen() {
     {
       id: "1",
       name: t("categories.rackets"),
-      image: <ClothesIcon width={60} height={60} />,
+      image: <ElectronicsIcon width={60} height={60} />,
     },
     {
       id: "5",
       name: t("categories.shuttlecocks"),
-      image: <ClothesIcon width={60} height={60} />,
+      image: <HomeLivingIcon width={60} height={60} />,
     },
     {
       id: "2",
       name: t("categories.shoes"),
-      image: <ClothesIcon width={60} height={60} />,
+      image: <ShoesIcon width={60} height={60} />,
     },
     {
       id: "3",
       name: t("categories.clothes"),
-      image: <ClothesIcon width={60} height={60} />,
+      image: <ApparelIcon width={60} height={60} />,
     },
     {
       id: "4",
       name: t("categories.bags"),
-      image: <ClothesIcon width={60} height={60} />,
+      image: <AccessoriesIcon width={60} height={60} />,
     },
     {
       id: "6",
@@ -83,12 +87,14 @@ export default function CategoriesScreen() {
               });
             }}
           >
-            {React.isValidElement(item.image) ? (
-              <View style={styles.categoryIcon}>{item.image}</View>
-            ) : (
-              <Image source={item.image as any} style={styles.categoryIcon} />
-            )}
-            <ThemedText style={{ marginTop: 6 }}>{item.name}</ThemedText>
+            <View style={styles.categoryRow}>
+              <ThemedText style={styles.categoryLabel}>{item.name}</ThemedText>
+              {React.isValidElement(item.image) ? (
+                <View style={styles.categoryIcon}>{item.image}</View>
+              ) : (
+                <Image source={item.image as any} style={styles.categoryIcon} />
+              )}
+            </View>
           </Pressable>
         )}
         showsVerticalScrollIndicator={false}
@@ -116,17 +122,27 @@ const styles = StyleSheet.create({
   },
   categoryItem: {
     width: "48%",
-    alignItems: "center",
     paddingTop: 12,
     paddingBottom: 12,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 14,
+    paddingRight: 14,
     borderRadius: 12,
     borderWidth: 1,
   },
+  categoryRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 8,
+  },
+  categoryLabel: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: "600",
+  },
   categoryIcon: {
-    width: "100%",
-    height: 80,
+    width: 60,
+    height: 60,
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",

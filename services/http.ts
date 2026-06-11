@@ -50,14 +50,19 @@ function buildUrl(url: string): string {
 
 async function buildHeaders(
   headers?: Record<string, string>,
+  isFormData: boolean = false,
 ): Promise<Record<string, string>> {
   const token = await AsyncStorage.getItem("loginToken");
-  return {
+  const finalHeaders: Record<string, string> = {
     Accept: "application/json",
     "Content-Type": "application/json",
     ...(token && { token }),
     ...headers,
   };
+  if (isFormData) {
+    delete finalHeaders["Content-Type"];
+  }
+  return finalHeaders;
 }
 
 export async function request<T = any>(
@@ -65,6 +70,7 @@ export async function request<T = any>(
   opts: HttpOptions = {},
 ): Promise<T> {
   const { method = "GET", headers, body, timeoutMs = DEFAULT_TIMEOUT } = opts;
+  const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
 
   const finalUrl = buildUrl(url);
   if (typeof __DEV__ !== "undefined" && __DEV__) {
@@ -72,11 +78,11 @@ export async function request<T = any>(
   }
   const init: RequestInit = {
     method,
-    headers: await buildHeaders(headers),
+    headers: await buildHeaders(headers, isFormData),
   } as RequestInit;
 
   if (body !== undefined && body !== null) {
-    init.body = typeof body === "string" ? body : JSON.stringify(body);
+    init.body = isFormData || typeof body === "string" ? body : JSON.stringify(body);
   }
 
   const res = await withTimeout(fetch(finalUrl, init), timeoutMs);

@@ -14,6 +14,7 @@ import { jwtDecode } from "jwt-decode";
 import React, { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 
 const OrderListScreen: FC = () => {
   const { t } = useTranslation();
@@ -30,7 +31,12 @@ const OrderListScreen: FC = () => {
     try {
       const token = await AsyncStorage.getItem("loginToken");
       const decode = jwtDecode<any>(token || "");
-      const userId = decode.userid;
+      const userId = decode.userid ?? decode.id;
+      if (!userId) {
+        setOngoingOrders([]);
+        setCompletedOrders([]);
+        return;
+      }
       const orders = await getOrderByUserId(userId);
       console.log("Fetched Orders:", orders);
       const ordersWithDetails = await Promise.all(
@@ -58,6 +64,12 @@ const OrderListScreen: FC = () => {
   useEffect(() => {
     loadOrders();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadOrders();
+    }, [language]),
+  );
 
   const renderOrderList = () => {
     const ordersToShow =
@@ -224,6 +236,18 @@ const OrderListScreen: FC = () => {
           </ThemedText>
         </Pressable>
       </ThemedView>
+      <ThemedText
+        type="default"
+        style={{
+          fontSize: 12,
+          color: secondaryText,
+          marginTop: 10,
+          marginBottom: 6,
+          paddingHorizontal: 4,
+        }}
+      >
+        Ongoing means the order is pending, processing, or shipping. Completed means delivered or cancelled.
+      </ThemedText>
       <ScrollView showsVerticalScrollIndicator={false}>
         {renderOrderList()}
       </ScrollView>

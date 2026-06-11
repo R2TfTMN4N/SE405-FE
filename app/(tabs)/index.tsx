@@ -25,6 +25,10 @@ import {
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
+import ElectronicsIcon from "@/components/ui/categoryIcon/ElectronicsIcon";
+import HomeLivingIcon from "@/components/ui/categoryIcon/HomeAndLivingIcon";
+import AccessoriesIcon from "@/components/ui/categoryIcon/AccessoriesIcon";
+import ApparelIcon from "@/components/ui/categoryIcon/ApprealIcon";
 
 export default function HomeScreen() {
   const { t } = useTranslation();
@@ -51,31 +55,31 @@ export default function HomeScreen() {
     {
       id: "1",
       name: t("categories.rackets"),
-      image: <ClothesIcon width={48} height={48} />,
+      image: <ElectronicsIcon width={48} height={48} />,
       filter: 1,
     },
     {
       id: "5",
       name: t("categories.shuttlecocks"),
-      image: <ClothesIcon width={48} height={48} />,
+      image: <HomeLivingIcon width={48} height={48} />,
       filter: 5,
     },
     {
       id: "2",
       name: t("categories.shoes"),
-      image: <ClothesIcon width={48} height={48} />,
+      image: <ShoesIcon width={48} height={48} />,
       filter: 2,
     },
     {
       id: "3",
       name: t("categories.clothes"),
-      image: <ClothesIcon width={48} height={48} />,
+      image: <ApparelIcon width={48} height={48} />,
       filter: 3,
     },
     {
       id: "4",
       name: t("categories.bags"),
-      image: <ClothesIcon width={48} height={48} />,
+      image: <AccessoriesIcon width={48} height={48} />,
       filter: 4,
     },
     {

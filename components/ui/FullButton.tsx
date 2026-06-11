@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { FC } from "react";
-import { Pressable, StyleProp, ViewStyle } from "react-native";
+import { Pressable, StyleProp, ViewStyle, Animated } from "react-native";
 import { ThemedText } from "../themed-text";
 
 type FullButtonProps = {
@@ -12,23 +12,31 @@ type FullButtonProps = {
 
 const FullButton: FC<FullButtonProps> = ({ onPress, text, style }) => {
   const schemeRaw = useColorScheme();
-  const scheme: keyof typeof Colors = (schemeRaw ??
-    "light") as keyof typeof Colors;
-  const bgColor: string = scheme === "light" ? "#1C1B1B" : Colors[scheme].tint;
+  const scheme = (schemeRaw ?? "light") as keyof typeof Colors;
+  const bgColor = Colors[scheme].tint;
+
   return (
     <Pressable
       onPress={onPress}
-      style={[
+      style={({ pressed }) => [
         {
           backgroundColor: bgColor,
-          paddingVertical: 15,
+          paddingVertical: 14,
           borderRadius: 12,
           alignItems: "center",
+          justifyContent: "center",
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: pressed ? 0.12 : 0.08,
+          shadowRadius: 12,
+          elevation: 6,
+          opacity: pressed ? 0.95 : 1,
+          transform: [{ scale: pressed ? 0.995 : 1 }],
         },
         style,
       ]}
     >
-      <ThemedText style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
+      <ThemedText style={{ color: "#fff", fontSize: 16, fontWeight: "700" }}>
         {text}
       </ThemedText>
     </Pressable>

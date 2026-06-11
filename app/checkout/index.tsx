@@ -86,7 +86,8 @@ const CheckoutScreen: FC = () => {
     const token = await AsyncStorage.getItem("loginToken");
     const decode = jwtDecode<any>(token || "");
     console.log("Decoded JWT:", decode);
-    const user = await getUserById(decode.userid);
+    const userId = decode.userid ?? decode.id;
+    const user = await getUserById(userId);
     const address = user.address || {};
     setFullName(user.name || "");
     setPhone(user.phonenumber || "");
@@ -326,7 +327,7 @@ const CheckoutScreen: FC = () => {
     selectedCountry !== "Vietnam" || !selectedProvince || isLoadingAddresses;
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={[styles.container, { backgroundColor: Colors[scheme].background }] }>
       <ThemedView style={styles.headerContainer}>
         <ThemedView style={styles.leftHeader}>
           <GoBackButton />
@@ -375,24 +376,27 @@ const CheckoutScreen: FC = () => {
             <ThemedView style={styles.fieldGroup}>
               <ThemedText>{t("checkout.fields.phone")} *</ThemedText>
               <TextInput
-                style={[
-                  styles.input,
-                  {
-                    color: Colors[scheme].text,
-                    borderColor: isPhoneFocused
-                      ? Colors[scheme].tint
-                      : Colors[scheme].border,
-                  },
-                ]}
-                value={phone}
-                onChangeText={setPhone}
-                placeholder={t("checkout.placeholders.phone")}
-                placeholderTextColor={Colors[scheme].icon}
-                keyboardType="default"
-                autoCapitalize="words"
-                onFocus={() => setIsPhoneFocused(true)}
-                onBlur={() => setIsPhoneFocused(false)}
-              />
+                  style={[
+                    styles.input,
+                    {
+                      color: Colors[scheme].text,
+                      borderColor: isPhoneFocused
+                        ? Colors[scheme].tint
+                        : Colors[scheme].border,
+                      backgroundColor: Colors[scheme].backgroundSecondary,
+                      borderRadius: 12,
+                      paddingVertical: 14,
+                    },
+                  ]}
+                  value={phone}
+                  onChangeText={setPhone}
+                  placeholder={t("checkout.placeholders.phone")}
+                  placeholderTextColor={Colors[scheme].icon}
+                  keyboardType="default"
+                  autoCapitalize="words"
+                  onFocus={() => setIsPhoneFocused(true)}
+                  onBlur={() => setIsPhoneFocused(false)}
+                />
             </ThemedView>
 
             <ThemedView style={styles.fieldGroup}>
@@ -516,7 +520,7 @@ const CheckoutScreen: FC = () => {
             </ThemedView>
           </ThemedView>
 
-          <FullButton
+            <FullButton
             text={t("common.continue")}
             onPress={() => {
               // Validate address fields
@@ -556,7 +560,7 @@ const CheckoutScreen: FC = () => {
                 },
               } as any);
             }}
-            style={{ marginTop: 20, flex: 1 }}
+            style={{ marginTop: 20, flex: 1, borderRadius: 12 }}
           />
         </ScrollView>
       </KeyboardAvoidingView>

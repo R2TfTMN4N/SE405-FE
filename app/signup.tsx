@@ -6,6 +6,7 @@ import PasswordInput from "@/components/ui/PasswordInput";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { register } from "@/services/authenticationService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -78,6 +79,8 @@ const SignUpScreen: React.FC = () => {
     try {
       const result = await register(fullname, username, email, phone, password);
       if (result) {
+        await AsyncStorage.removeItem("loginToken");
+        await AsyncStorage.removeItem("password");
         Alert.alert(t("signup.signupSuccess"));
         router.replace("/login" as any);
       } else {
@@ -277,7 +280,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     paddingHorizontal: 16,
-    paddingTop: 50,
+    paddingTop: 60,
     paddingBottom: 40,
   },
   logoContainer: {
@@ -318,11 +321,11 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   input: {
-    fontSize: 18,
-    borderWidth: 1,
-    borderRadius: 8,
+    fontSize: 16,
+    borderWidth: 1.5,
+    borderRadius: 12,
     paddingHorizontal: 12,
-    paddingVertical: 15,
+    paddingVertical: 16,
     marginTop: 8,
   },
   forgotPasswordRow: {

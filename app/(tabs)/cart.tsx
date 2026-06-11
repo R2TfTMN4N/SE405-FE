@@ -11,7 +11,7 @@ import { deleteCart, getCartByUserID } from "@/services/cartService";
 import { getProductById } from "@/services/productService";
 import { getSuggestPromotions } from "@/services/promotionService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { jwtDecode } from "jwt-decode";
@@ -35,6 +35,7 @@ const CartScreen: FC = () => {
   const language = getCurrentLanguage();
   const toast = useToast();
   const router = useRouter();
+  const navigation: any = useNavigation();
   const scheme = useColorScheme() ?? "light";
   const palette = Colors[scheme];
   const [total, setTotal] = useState(0);
@@ -62,6 +63,10 @@ const CartScreen: FC = () => {
   };
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const [pendingSelectProductId, setPendingSelectProductId] = useState<string | undefined>(
+    selectProductId,
+  );
+  const hasAppliedSelectRef = React.useRef(false);
 
   const getDecodedLoginToken = async () => {
     const token = await AsyncStorage.getItem("loginToken");
@@ -77,7 +82,7 @@ const CartScreen: FC = () => {
     }
   };
 
-  const loadPromotions = async () => {
+  const loadPromotions = React.useCallback(async () => {
     const decode = await getDecodedLoginToken();
     const userid = decode?.userid;
 
@@ -99,13 +104,13 @@ const CartScreen: FC = () => {
           maxDiscount: promo.max_value,
         }) as Promotion,
     );
-  };
+  }, [total]);
 
   useEffect(() => {
     loadPromotions().then(setPromotions);
-  }, [total]);
+  }, [loadPromotions]);
 
-  function calculateDiscountAmount(subtotal: number, promo?: Promotion) {
+  const calculateDiscountAmount = React.useCallback((subtotal: number, promo?: Promotion) => {
     if (!promo || subtotal <= 0) return 0;
     if (promo.minSubtotal && subtotal < promo.minSubtotal) return 0;
     const rawDiscount =
@@ -114,9 +119,9 @@ const CartScreen: FC = () => {
       ? Math.min(rawDiscount, promo.maxDiscount)
       : rawDiscount;
     return Math.min(cappedDiscount, subtotal);
-  }
+  }, []);
 
-  function summarizeCart(items: any[]) {
+  const summarizeCart = React.useCallback((items: any[]) => {
     let subtotal = 0;
     let checkedCount = 0;
     items.forEach((cartItem) => {
@@ -132,7 +137,7 @@ const CartScreen: FC = () => {
       }
     });
     return { subtotal, checkedCount };
-  }
+  }, []);
 
   const selectedPromo = useMemo(
     () => promotions.find((p) => p.id === selectedPromotionId) ?? null,
@@ -146,14 +151,20 @@ const CartScreen: FC = () => {
     );
     const previewTotal = Math.max(subtotal - previewDiscount, 0);
     return { subtotal, previewDiscount, previewTotal };
-  }, [cartItems, selectedPromo]);
+  }, [calculateDiscountAmount, cartItems, selectedPromo, summarizeCart]);
 
   const formatCurrency = (value: number) =>
     value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
 
   // Helper to normalize/enrich server cart items to UI shape
-  const mapServerCartToUi = async (serverCart: any[]): Promise<any[]> => {
+  const mapServerCartToUi = React.useCallback(async (
+    serverCart: any[],
+    previousItems: any[] = [],
+  ): Promise<any[]> => {
     const lang = language;
+    const previousMap = new Map(
+      previousItems.map((item) => [String(item.id), Boolean(item.checked)]),
+    );
     const mapped = await Promise.all(
       (serverCart ?? []).map(async (it: any) => {
         const cartId = it?.id;
@@ -189,16 +200,37 @@ const CartScreen: FC = () => {
             flashsale,
           },
           numberOfItems: it?.quantity ?? 1,
-          checked: false,
+          checked: previousMap.get(String(cartId ?? productId ?? "")) ?? false,
         };
       }),
     );
     return mapped;
-  };
+  }, [language]);
+
+  const recalcTotals = React.useCallback(
+    (items: any[], promoId: string | null = appliedPromotionId) => {
+      const { subtotal, checkedCount } = summarizeCart(items);
+      const promo = promotions.find((p) => p.id === promoId);
+      const computedDiscount = calculateDiscountAmount(subtotal, promo);
+      setTotal(subtotal);
+      setDiscountAmount(computedDiscount);
+      setCurrentTotal(Math.max(subtotal - computedDiscount, 0));
+      setNumberOfChecked(checkedCount);
+    },
+    [appliedPromotionId, calculateDiscountAmount, promotions, summarizeCart],
+  );
+
+  React.useEffect(() => {
+    if (selectProductId && !hasAppliedSelectRef.current) {
+      setPendingSelectProductId(selectProductId);
+    }
+  }, [selectProductId]);
 
   // Load cart from API based on stored user id (if available)
   useFocusEffect(
     React.useCallback(() => {
+      let isMounted = true;
+
       const load = async () => {
         try {
           let userId: string | number | undefined;
@@ -211,40 +243,114 @@ const CartScreen: FC = () => {
           }
 
           const serverCart = await getCartByUserID(userId);
-          const normalized = await mapServerCartToUi(serverCart);
+          const normalized = await mapServerCartToUi(serverCart, cartItems);
 
-          if (selectProductId) {
+          const shouldApplySelection =
+            Boolean(pendingSelectProductId) && !hasAppliedSelectRef.current;
+
+          if (shouldApplySelection) {
             normalized.forEach((item) => {
-              if (String(item.product.productid) === String(selectProductId)) {
-                item.checked = true;
-              } else {
-                item.checked = false;
-              }
+              item.checked =
+                String(item.product.productid) === String(pendingSelectProductId);
             });
+            hasAppliedSelectRef.current = true;
+            setPendingSelectProductId(undefined);
+
+            try {
+              router.setParams({ selectProductId: undefined });
+            } catch (error) {
+              console.warn("Failed to clear cart selection param", error);
+            }
           }
 
-          setCartItems(normalized);
-          recalcTotals(normalized as any);
+          if (isMounted) {
+            setCartItems(normalized);
+            recalcTotals(normalized as any);
+          }
         } catch (error) {
           console.error("Error fetching cart items:", error);
         }
       };
+
       load();
-    }, [selectProductId]),
+
+      return () => {
+        isMounted = false;
+      };
+    }, [cartItems, mapServerCartToUi, pendingSelectProductId, recalcTotals, router, t, toast]),
   );
 
-  const recalcTotals = (
-    items: any[],
-    promoId: string | null = appliedPromotionId,
-  ) => {
-    const { subtotal, checkedCount } = summarizeCart(items);
-    const promo = promotions.find((p) => p.id === promoId);
-    const computedDiscount = calculateDiscountAmount(subtotal, promo);
-    setTotal(subtotal);
-    setDiscountAmount(computedDiscount);
-    setCurrentTotal(Math.max(subtotal - computedDiscount, 0));
-    setNumberOfChecked(checkedCount);
-  };
+  // Hide the bottom tab bar while the cart screen is focused.
+  useFocusEffect(
+    React.useCallback(() => {
+      const hideTabBar = () => {
+        try {
+          navigation.setOptions?.({
+            tabBarStyle: { display: "none" },
+            tabBarVisible: false,
+          });
+        } catch {
+          // ignore
+        }
+
+        const parents: any[] = [];
+        try {
+          const p1 = navigation.getParent && navigation.getParent();
+          const p2 = p1 && p1.getParent && p1.getParent();
+          if (p1) parents.push(p1);
+          if (p2) parents.push(p2);
+        } catch {
+          // ignore
+        }
+
+        parents.forEach((p) => {
+          try {
+            p.setOptions?.({
+              tabBarStyle: { display: "none" },
+              tabBarVisible: false,
+            });
+          } catch {
+            // ignore
+          }
+        });
+      };
+
+      const restoreTabBar = () => {
+        try {
+          navigation.setOptions?.({
+            tabBarStyle: undefined,
+            tabBarVisible: true,
+          });
+        } catch {
+          // ignore
+        }
+
+        const parents: any[] = [];
+        try {
+          const p1 = navigation.getParent && navigation.getParent();
+          const p2 = p1 && p1.getParent && p1.getParent();
+          if (p1) parents.push(p1);
+          if (p2) parents.push(p2);
+        } catch {
+          // ignore
+        }
+
+        parents.forEach((p) => {
+          try {
+            p.setOptions?.({
+              tabBarStyle: undefined,
+              tabBarVisible: true,
+            });
+          } catch {
+            // ignore
+          }
+        });
+      };
+
+      hideTabBar();
+      return restoreTabBar;
+    }, [navigation]),
+  );
 
   const handleToggle = (id: string) => {
     const updatedItems = cartItems.map((cartItem) => {
@@ -354,7 +460,7 @@ const CartScreen: FC = () => {
     <ThemedView
       style={[
         styles.container,
-        { justifyContent: "center", alignItems: "center" },
+        { justifyContent: "center", alignItems: "center", backgroundColor: palette.background },
       ]}
     >
       <Image
@@ -376,8 +482,8 @@ const CartScreen: FC = () => {
       />
     </ThemedView>
   ) : (
-    <ThemedView>
-      <ThemedView style={styles.container}>
+    <ThemedView style={{ backgroundColor: palette.background }}>
+      <ThemedView style={[styles.container, { backgroundColor: palette.background }] }>
         <ThemedView style={styles.headerContainer}>
           <ThemedView style={styles.leftHeader}>
             <GoBackButton />
@@ -412,7 +518,7 @@ const CartScreen: FC = () => {
             />
           ))}
         </ScrollView>
-        <ThemedView style={styles.orderinfo}>
+        <ThemedView style={[styles.orderinfo, { backgroundColor: palette.backgroundSecondary, padding: 12, borderTopWidth: 1, borderTopColor: palette.border }] }>
           <ThemedView style={{ gap: 5 }}>
             <ThemedText type="title" style={{ fontSize: 18 }}>
               {t("cart.orderInfo")}
@@ -494,6 +600,7 @@ const CartScreen: FC = () => {
               handleCheckout();
             }}
             text={`${t("cart.checkout")} (${numberOfChecked})`}
+            style={{ width: "100%" }}
           />
         </ThemedView>
       </ThemedView>
@@ -553,12 +660,10 @@ const CartScreen: FC = () => {
                     <ThemedView
                       style={[
                         styles.promotionCard,
-                        isSelected
-                          ? {
-                              borderColor: palette.tint,
-                              backgroundColor: "#e8f5e9",
-                            }
-                          : { borderColor: "#e0e0e0" },
+                        {
+                          borderColor: isSelected ? palette.tint : palette.border,
+                          backgroundColor: isSelected ? palette.background : palette.backgroundSecondary,
+                        },
                       ]}
                     >
                       <ThemedView style={styles.promotionHeader}>

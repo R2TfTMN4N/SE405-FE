@@ -125,48 +125,6 @@ const CheckoutScreen: FC = () => {
             }}
           >
             <Pressable
-              onPress={() => setPaymentMethod("paypal")}
-              style={{
-                flex: 1,
-                borderRadius: 12,
-                padding: 16,
-                backgroundColor: "#F9E0E0",
-                alignItems: "center",
-                borderWidth: 2,
-                borderColor:
-                  paymentMethod === "paypal"
-                    ? Colors[scheme].tint
-                    : "transparent",
-              }}
-            >
-              <Image
-                source={require("@/assets/images/payment/paypal.png")}
-                contentFit="contain"
-                style={{ width: 100, height: 40 }}
-              />
-            </Pressable>
-            <Pressable
-              onPress={() => setPaymentMethod("vnpay")}
-              style={{
-                flex: 1,
-                borderRadius: 12,
-                padding: 16,
-                backgroundColor: "#F9E0E0",
-                alignItems: "center",
-                borderWidth: 2,
-                borderColor:
-                  paymentMethod === "vnpay"
-                    ? Colors[scheme].tint
-                    : "transparent",
-              }}
-            >
-              <Image
-                source={require("@/assets/images/payment/vnpay.png")}
-                contentFit="contain"
-                style={{ width: 100, height: 40 }}
-              />
-            </Pressable>
-            <Pressable
               onPress={() => setPaymentMethod("cash")}
               style={{
                 flex: 1,

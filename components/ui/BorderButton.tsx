@@ -22,20 +22,22 @@ const BorderButton: FC<BorderButtonProps> = ({
   const schemeRaw = useColorScheme();
   const scheme: ColorScheme = (schemeRaw ?? "light") as ColorScheme;
   const textColor: string = Colors[scheme].text;
-  const borderColor: string =
-    scheme === "light" ? Colors[scheme].border : Colors[scheme].border;
+  const borderColor: string = Colors[scheme].border; // Keeping this line for context
+
   return (
     <Pressable
       onPress={onPress}
-      style={[
+      style={({ pressed }) => [
         {
           borderColor: borderColor,
           borderWidth: 1,
-          paddingVertical: 15,
+          paddingVertical: 12,
           borderRadius: 12,
           alignItems: "center",
           justifyContent: "center",
-          flexDirection: "row",
+          backgroundColor: Colors[scheme].backgroundSecondary,
+          opacity: pressed ? 0.9 : 1,
+          transform: [{ scale: pressed ? 0.98 : 1 }],
         },
         style,
       ]}
@@ -43,7 +45,7 @@ const BorderButton: FC<BorderButtonProps> = ({
       <ThemedText
         style={{
           color: textColor,
-          fontSize: 16,
+          fontSize: 15,
           fontWeight: "600",
           marginRight: icon ? 8 : 0,
         }}

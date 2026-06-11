@@ -4,6 +4,10 @@ import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ColorSchemeName, StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "../themed-text";
 
+const Fonts = {
+  bodyMedium: "Inter_500Medium",
+} as const;
+
 type IconPack = "Feather" | "Material" | "Ionicons";
 interface ProfileMenuItemProps {
   icon: string;
@@ -26,7 +30,10 @@ const ProfileMenuItem: React.FC<ProfileMenuItemProps> = ({
     iconPack === "Material" ? MaterialCommunityIcons : Feather;
   return (
     <TouchableOpacity
-      style={[styles.menuItem, { borderBottomColor: borderColor }]}
+      style={[
+        styles.menuItem,
+        { borderBottomColor: borderColor, paddingVertical: 14 },
+      ]}
       onPress={onPress}
     >
       <IconComponent name={icon as any} size={22} color={secondaryText} />
@@ -42,12 +49,13 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 15,
+    paddingVertical: 12,
     borderBottomWidth: 1,
   },
   menuItemText: {
     flex: 1,
     marginLeft: 15,
     fontSize: 16,
+    fontFamily: Fonts.bodyMedium,
   },
 });

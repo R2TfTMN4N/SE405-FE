@@ -18,6 +18,10 @@ import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
 import { IconSymbol } from "./icon-symbol";
 
+const HeaderFonts = {
+  heading: "Poppins_600SemiBold",
+} as const;
+
 type HeaderProps = {
   mode?: "search";
 };
@@ -26,9 +30,8 @@ const Header: FC<HeaderProps> = ({ mode }: HeaderProps): React.ReactElement => {
   const router = useRouter();
   const navigation = useNavigation();
   const schemeRaw: ColorSchemeName | undefined = useColorScheme();
-  const scheme: keyof typeof Colors = (schemeRaw ??
-    "light") as keyof typeof Colors;
-  const iconColor: string = Colors[scheme].text;
+  const scheme = (schemeRaw ?? "light") as keyof typeof Colors;
+  const iconColor = Colors[scheme].text;
   const logoSource: ImageSourcePropType =
     scheme === "dark"
       ? require("../../assets/images/logo/dark-logo.png")
@@ -56,10 +59,27 @@ const Header: FC<HeaderProps> = ({ mode }: HeaderProps): React.ReactElement => {
   );
 
   return (
-    <ThemedView style={styles.headerContainer}>
+    <ThemedView
+      style={[
+        styles.headerContainer,
+        {
+          borderBottomWidth: 1,
+          borderBottomColor: Colors[scheme].border,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        },
+      ]}
+    >
       <ThemedView style={styles.logoContainer}>
         <Image source={logoSource} style={styles.logo} />
-        <ThemedText type="title" style={[styles.title, { color: iconColor }]}>
+        <ThemedText
+          type="title"
+          style={[
+            styles.title,
+            { color: iconColor, fontFamily: HeaderFonts.heading },
+          ]}
+        >
           ShopEase
         </ThemedText>
       </ThemedView>
@@ -70,11 +90,18 @@ const Header: FC<HeaderProps> = ({ mode }: HeaderProps): React.ReactElement => {
             onPress={() => {
               router.push("/notifications");
             }}
-            style={{ marginRight: 12 }}
+            style={({ pressed }) => [
+              { marginRight: 12, opacity: pressed ? 0.8 : 1 },
+            ]}
           >
-            <IconSymbol size={28} name="bell.fill" color={iconColor} />
+            <IconSymbol size={24} name="bell.fill" color={iconColor} />
             {unreadCount > 0 && (
-              <View style={styles.badge}>
+              <View
+                style={[
+                  styles.badge,
+                  { backgroundColor: Colors[scheme].tint, borderColor: Colors[scheme].background },
+                ]}
+              >
                 <ThemedText style={styles.badgeText}>
                   {unreadCount > 99 ? "99+" : unreadCount}
                 </ThemedText>
@@ -85,13 +112,22 @@ const Header: FC<HeaderProps> = ({ mode }: HeaderProps): React.ReactElement => {
             onPress={() => {
               router.push("/search");
             }}
+            style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
           >
-            <IconSymbol size={28} name="search.fill" color={iconColor} />
+            <IconSymbol size={26} name="search.fill" color={iconColor} />
           </Pressable>
-          <Pressable onPress={() => {}} style={{ marginLeft: 12 }}>
+          <Pressable
+            onPress={() => {} }
+            style={({ pressed }) => [
+              { marginLeft: 12, opacity: pressed ? 0.9 : 1 },
+            ]}
+          >
             <Image
               source={require("../../assets/images/avatar/light-avatar.png")}
-              style={styles.avatar}
+              style={[
+                styles.avatar,
+                { borderColor: Colors[scheme].border, borderWidth: 1 },
+              ]}
             />
           </Pressable>
         </ThemedView>
@@ -102,6 +138,7 @@ const Header: FC<HeaderProps> = ({ mode }: HeaderProps): React.ReactElement => {
           onPress={() => {
             navigation.goBack();
           }}
+          style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
         >
           <IconSymbol size={28} name="close" color={iconColor} />
         </Pressable>
@@ -114,58 +151,56 @@ export default Header;
 
 const styles = StyleSheet.create({
   headerContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-
   rightContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "transparent",
   },
-
   logoContainer: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: "transparent",
   },
-
   logo: {
-    height: 48,
-    width: 48,
-  },
-
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 8,
-  },
-
-  avatar: {
-    width: 40,
     height: 40,
-    borderRadius: 20,
+    width: 40,
+    borderRadius: 12,
   },
-  profilePopup: {
-    position: "absolute",
-    top: 60,
+  title: {
+    fontSize: 22,
+    fontWeight: "800",
+    marginLeft: 10,
+    letterSpacing: -0.5,
+  },
+  avatar: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
   },
   badge: {
     position: "absolute",
-    top: -6,
-    right: -6,
-    backgroundColor: "red",
-    borderRadius: 10,
-    minWidth: 20,
-    height: 20,
+    top: -4,
+    right: -4,
+    borderRadius: 12,
+    minWidth: 18,
+    height: 18,
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 4,
     zIndex: 1,
+    borderWidth: 1.5,
+    borderColor: "#FFF",
   },
   badgeText: {
     color: "white",
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: "bold",
   },
 });

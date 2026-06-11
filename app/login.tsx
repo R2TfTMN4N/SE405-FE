@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     paddingHorizontal: 16,
-    paddingTop: 50,
+    paddingTop: 60,
     paddingBottom: 24,
   },
   logoContainer: {
@@ -302,11 +302,11 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   input: {
-    fontSize: 18,
+    fontSize: 16,
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 16,
     paddingHorizontal: 12,
-    paddingVertical: 15,
+    paddingVertical: 16,
     marginTop: 8,
   },
   forgotPasswordRow: {

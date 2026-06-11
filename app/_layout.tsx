@@ -5,11 +5,15 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import * as SplashScreen from "expo-splash-screen";
+import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins";
+import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold } from "@expo-google-fonts/inter";
+
+SplashScreen.preventAutoHideAsync();
 import { useEffect, useRef, useState } from "react";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import "react-native-reanimated";
 
 import { AuthProvider } from "@/app/providers/AuthProvider";
@@ -30,6 +34,10 @@ export default function RootLayout() {
   const segments = useSegments();
   const [stackReady, setStackReady] = useState(false);
   const didForceRef = useRef(false);
+
+  const [loaded, error] = useFonts({ Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_700Bold, Inter_400Regular, Inter_500Medium, Inter_600SemiBold });
+
+  useEffect(() => { if (loaded || error) { SplashScreen.hideAsync(); } }, [loaded, error]);
 
   useEffect(() => {
     // Ensure we only force navigation once. If we're already on the welcome
@@ -66,10 +74,11 @@ export default function RootLayout() {
     }
   }, [segments, router]);
 
-  return (
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <ThemePreferenceProvider>
-        <ToastProvider>
+  if (!loaded && !error) return null;
+
+  const content = (
+    <ThemePreferenceProvider>
+      <ToastProvider>
           <AuthProvider>
             <ThemeProvider
               value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
@@ -216,6 +225,18 @@ export default function RootLayout() {
           </AuthProvider>
         </ToastProvider>
       </ThemePreferenceProvider>
-    </GoogleOAuthProvider>
   );
+
+  // GoogleOAuthProvider dùng document (DOM) nên chỉ wrap trên web
+  if (Platform.OS === "web") {
+    const { GoogleOAuthProvider } = require("@react-oauth/google");
+    return (
+      <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+        {content}
+      </GoogleOAuthProvider>
+    );
+  }
+
+  return content;
 }
+

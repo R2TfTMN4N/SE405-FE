@@ -128,9 +128,9 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   progressBackground: {
-    height: 6,
-    width: "70%",
-    borderRadius: 8,
+    height: 8,
+    width: "75%",
+    borderRadius: 12,
     marginTop: 20,
     backgroundColor: "rgba(0,0,0,0.08)",
     overflow: "hidden",
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   percent: {
-    marginTop: 12,
+    marginTop: 12, fontWeight: "600", fontSize: 16,
   },
   skip: {
     marginTop: 16,

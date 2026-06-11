@@ -18,6 +18,7 @@ import {
   Alert,
   ColorSchemeName,
   Image,
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -46,7 +47,7 @@ const ProfileScreen: React.FC = () => {
     const getUserInfo = async () => {
       const token = await AsyncStorage.getItem("loginToken");
       const decodedToken = jwtDecode(token || "") as any;
-      const userid = decodedToken.userid;
+      const userid = decodedToken.userid ?? decodedToken.id;
       const user = await getUserById(userid);
       if (user) {
         setUserInfo(user);
@@ -61,14 +62,10 @@ const ProfileScreen: React.FC = () => {
       await signOut();
     };
 
-    if (
-      typeof window !== "undefined" &&
-      typeof (window as any).confirm === "function"
-    ) {
-      // Web: dùng window.confirm thay vì Alert.alert (Alert không hoạt động trên web)
-      const confirmed = (window as any).confirm(
-        t("profile.logoutConfirmation"),
-      );
+    if (Platform.OS === "web") {
+      // Web: dùng window.confirm vì Alert.alert không hoạt động trên web
+      // @ts-ignore
+      const confirmed = window.confirm(t("profile.logoutConfirmation"));
       if (confirmed) await doLogout();
     } else {
       Alert.alert(t("profile.logout"), t("profile.logoutConfirmation"), [
@@ -103,7 +100,9 @@ const ProfileScreen: React.FC = () => {
         style={[styles.contentContainer, { backgroundColor: background }]}
         showsVerticalScrollIndicator={false}
       >
-        <ThemedView style={styles.section}>
+        <ThemedView
+          style={[styles.section, { backgroundColor: Colors[scheme].cardSurface }]}
+        >
           <ThemedText style={[styles.sectionTitle, { color: textColor }]}>
             {t("profile.personalInformation")}
           </ThemedText>
@@ -119,7 +118,9 @@ const ProfileScreen: React.FC = () => {
           />
         </ThemedView>
 
-        <ThemedView style={styles.section}>
+        <ThemedView
+          style={[styles.section, { backgroundColor: Colors[scheme].cardSurface }]}
+        >
           <ThemedText style={[styles.sectionTitle, { color: textColor }]}>
             {t("profile.supportInformation")}
           </ThemedText>
@@ -145,7 +146,9 @@ const ProfileScreen: React.FC = () => {
           />
         </ThemedView>
 
-        <ThemedView style={styles.section}>
+        <ThemedView
+          style={[styles.section, { backgroundColor: Colors[scheme].cardSurface }]}
+        >
           <ThemedText style={[styles.sectionTitle, { color: textColor }]}>
             Account Management
           </ThemedText>
@@ -161,7 +164,9 @@ const ProfileScreen: React.FC = () => {
             onValueChange={setTheme}
           />
         </ThemedView>
-        <ThemedView style={styles.section}>
+        <ThemedView
+          style={[styles.section, { backgroundColor: Colors[scheme].cardSurface }]}
+        >
           <ThemedText style={[styles.sectionTitle, { color: textColor }]}>
             {t("profile.language")}
           </ThemedText>
@@ -183,9 +188,13 @@ const styles = StyleSheet.create({
   },
   // --- Header ---
   header: {
+    paddingTop: 80,
+    paddingBottom: 40,
+    paddingHorizontal: 24,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 20,
     paddingVertical: 20,
   },
   avatar: {
@@ -215,6 +224,13 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   section: {
+    borderRadius: 20,
+    padding: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
     marginTop: 20,
     paddingHorizontal: 25,
   },

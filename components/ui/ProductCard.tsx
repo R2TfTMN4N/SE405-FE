@@ -66,7 +66,14 @@ export default function ProductCard({ product }: { product: any }) {
     <Pressable
       key={product.id}
       onPress={() => router.push(`/product/${product.id}` as any)}
-      style={[styles.card, { width: cardWidth, borderColor: borderColor }]}
+      style={[
+        styles.card,
+        {
+          width: cardWidth,
+          borderColor: borderColor,
+          backgroundColor: scheme === "light" ? "#FFF" : "#111827",
+        },
+      ]}
     >
       <ThemedView style={styles.inner}>
         <ThemedView style={styles.imageWrapper}>
@@ -84,7 +91,7 @@ export default function ProductCard({ product }: { product: any }) {
         </ThemedView>
         <ThemedText
           type="defaultSemiBold"
-          numberOfLines={1}
+          numberOfLines={2}
           ellipsizeMode="tail"
           style={{ fontSize: 14, marginTop: 8 }}
         >
@@ -137,14 +144,19 @@ export default function ProductCard({ product }: { product: any }) {
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    height: 310,
-    shadowColor: "#686868ff",
+    marginBottom: 18,
+    borderRadius: 14,
+    borderWidth: 0,
+    height: 320,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 6,
+    overflow: "hidden",
   },
   inner: {
-    padding: 8,
+    padding: 12,
     borderRadius: 12,
   },
   image: {

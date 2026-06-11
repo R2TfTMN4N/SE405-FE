@@ -37,7 +37,8 @@
     "categories": "Categories",
     "cart": "Cart",
     "profile": "Profile",
-    "wishlist": "Wishlist"
+    "wishlist": "Wishlist",
+    "admin": "Admin Center"
   },
   "onboarding": {
     "exploreProducts": "Explore a wide range of products",
